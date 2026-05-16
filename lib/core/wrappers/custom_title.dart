@@ -1,7 +1,7 @@
 import 'package:subscription_manage/core/exported_files/exported_file.dart';
 
 class CustomTitle extends StatelessWidget {
-  const CustomTitle({required this.title});
+  const CustomTitle({super.key, required this.title});
 
   final String title;
 

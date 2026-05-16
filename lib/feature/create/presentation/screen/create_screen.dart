@@ -1,4 +1,8 @@
 
+import 'package:subscription_manage/core/wrappers/custom_label.dart';
+import 'package:subscription_manage/feature/create/widgets/payment_method_chip.dart';
+import 'package:subscription_manage/feature/create/widgets/premium_text_field.dart';
+import 'package:subscription_manage/feature/create/widgets/selectable_pill.dart';
 import '../../../../core/exported_files/exported_file.dart';
 import '../controller/create_controller.dart';
 
@@ -27,23 +31,23 @@ class CreateScreen extends StatelessWidget {
             children: [
               CustomTitle(title: 'Create Subscription'),
               const SizedBox(height: 16),
-              _PremiumLabel(text: 'Subscription name'),
+              CustomLabel(text: 'Subscription name'),
               const SizedBox(height: 8),
-              _PremiumTextField(
+              PremiumTextField(
                 controller: controller.subscriptionNameController,
                 hintText: 'Netflix Premium',
               ),
               const SizedBox(height: 14),
-              _PremiumLabel(text: 'Cost'),
+              CustomLabel(text: 'Cost'),
               const SizedBox(height: 8),
-              _PremiumTextField(
+              PremiumTextField(
                 controller: controller.costController,
                 hintText: '00.00',
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 prefixText: '\$',
               ),
               const SizedBox(height: 14),
-              _PremiumLabel(text: 'Payment cycle'),
+              CustomLabel(text: 'Payment cycle'),
               const SizedBox(height: 10),
               Obx(
                 () => Row(
@@ -54,7 +58,7 @@ class CreateScreen extends StatelessWidget {
                             padding: EdgeInsets.only(
                               right: option != controller.cycleOptions.last ? 8 : 0,
                             ),
-                            child: _SelectablePill(
+                            child: SelectablePill(
                               label: option,
                               isSelected: controller.selectedCycle.value == option,
                               onTap: () => controller.selectCycle(option),
@@ -66,7 +70,7 @@ class CreateScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              _PremiumLabel(text: 'Start Date'),
+              CustomLabel(text: 'Start Date'),
               const SizedBox(height: 8),
               Obx(
                 () => _TapField(
@@ -76,7 +80,7 @@ class CreateScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              _PremiumLabel(text: 'Payment Method'),
+              CustomLabel(text: 'Payment Method'),
               const SizedBox(height: 10),
               Obx(
                 () => Wrap(
@@ -84,7 +88,7 @@ class CreateScreen extends StatelessWidget {
                   runSpacing: 10,
                   children: controller.paymentMethods
                       .map(
-                        (method) => _PaymentMethodChip(
+                        (method) => PaymentMethodChip(
                           label: method,
                           isSelected: controller.selectedPaymentMethod.value == method,
                           onTap: () => controller.selectPaymentMethod(method),
@@ -94,7 +98,7 @@ class CreateScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              _PremiumLabel(text: 'Notification'),
+              CustomLabel(text: 'Notification'),
               const SizedBox(height: 8),
               Obx(
                 () => _NotificationTile(
@@ -103,9 +107,9 @@ class CreateScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              _PremiumLabel(text: 'Note (Optional)'),
+              CustomLabel(text: 'Note (Optional)'),
               const SizedBox(height: 8),
-              _PremiumTextField(
+              PremiumTextField(
                 controller: controller.noteController,
                 hintText: 'Add any note...',
                 maxLines: 3,
@@ -121,108 +125,9 @@ class CreateScreen extends StatelessWidget {
 }
 
 
-class _PremiumLabel extends StatelessWidget {
-  const _PremiumLabel({required this.text});
 
-  final String text;
 
-  @override
-  Widget build(BuildContext context) {
-    return ResponsiveText(
-      text: text,
-      fontSize: 13,
-      fontWeight: FontWeight.w800,
-      color: Colors.white,
-      letterSpacing: 0.6,
-    );
-  }
-}
 
-class _PremiumTextField extends StatelessWidget {
-  const _PremiumTextField({
-    required this.controller,
-    required this.hintText,
-    this.keyboardType,
-    this.prefixText,
-    this.maxLines = 1,
-  });
-
-  final TextEditingController controller;
-  final String hintText;
-  final TextInputType? keyboardType;
-  final String? prefixText;
-  final int maxLines;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF171C27), Color(0xFF121722)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.07)),
-      ),
-      child: TextField(
-        controller: controller,
-        keyboardType: keyboardType,
-        maxLines: maxLines,
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: const TextStyle(color: Color(0xFF80889B)),
-          prefixText: prefixText,
-          prefixStyle: const TextStyle(color: Color(0xFFE0E5F2), fontWeight: FontWeight.w700),
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-        ),
-      ),
-    );
-  }
-}
-
-class _SelectablePill extends StatelessWidget {
-  const _SelectablePill({
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        height: 46,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          gradient: isSelected
-              ? const LinearGradient(colors: [Color(0xFF8A7CFF), Color(0xFF4F46E5)])
-              : const LinearGradient(colors: [Color(0xFF171C27), Color(0xFF121722)]),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected
-                ? const Color(0xFFA698FF)
-                : Colors.white.withValues(alpha: 0.07),
-          ),
-        ),
-        child: ResponsiveText(
-          text: label,
-          fontSize: 12.5,
-          fontWeight: FontWeight.w800,
-          color: isSelected ? Colors.white : const Color(0xFFCDD4E5),
-        ),
-      ),
-    );
-  }
-}
 
 class _TapField extends StatelessWidget {
   const _TapField({
@@ -270,47 +175,6 @@ class _TapField extends StatelessWidget {
   }
 }
 
-class _PaymentMethodChip extends StatelessWidget {
-  const _PaymentMethodChip({
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        width: 64,
-        height: 44,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          gradient: isSelected
-              ? const LinearGradient(colors: [Color(0xFF52D1FF), Color(0xFF1CB5E0)])
-              : const LinearGradient(colors: [Color(0xFF171C27), Color(0xFF121722)]),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected
-                ? const Color(0xFF7CE4FF)
-                : Colors.white.withValues(alpha: 0.07),
-          ),
-        ),
-        child: ResponsiveText(
-          text: label,
-          fontSize: 10.5,
-          fontWeight: FontWeight.w800,
-          color: isSelected ? const Color(0xFF05151D) : const Color(0xFFCDD4E5),
-        ),
-      ),
-    );
-  }
-}
 
 class _NotificationTile extends StatelessWidget {
   const _NotificationTile({

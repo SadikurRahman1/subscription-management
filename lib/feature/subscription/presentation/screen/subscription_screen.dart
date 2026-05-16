@@ -1,3 +1,4 @@
+import 'package:subscription_manage/core/wrappers/custom_label.dart';
 import 'package:subscription_manage/feature/subscription/presentation/widgets/subscription_tile.dart';
 import 'package:subscription_manage/feature/subscription/presentation/widgets/toggle_summary_card.dart';
 import '../../../../core/exported_files/exported_file.dart';
@@ -30,7 +31,7 @@ class SubscriptionScreen extends StatelessWidget {
                 // Single toggleable summary card (monthly <-> yearly)
                 ToggleSummaryCard(controller: controller),
                 const SizedBox(height: 18),
-                const _SmallLabel(text: 'Subscriptions'),
+                const CustomLabel(text: 'Subscriptions'),
                 const SizedBox(height: 8),
                 Column(
                   children: controller.subscriptions
@@ -51,23 +52,4 @@ class SubscriptionScreen extends StatelessWidget {
   }
 }
 
-
-
-
-class _SmallLabel extends StatelessWidget {
-  const _SmallLabel({required this.text});
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return ResponsiveText(
-      text: text,
-      fontSize: 12,
-      fontWeight: FontWeight.w800,
-      color: const Color(0xFFD7DCEC),
-      letterSpacing: 0.6,
-    );
-  }
-}
 
