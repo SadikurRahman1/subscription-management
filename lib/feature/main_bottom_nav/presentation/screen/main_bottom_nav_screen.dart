@@ -1,8 +1,9 @@
-import 'package:subscription_manage/feature/subscription/presentation/screen/subscription_screen.dart';
+import 'package:subscription_manage/feature/subscription/presentation/screens/subscription_screen.dart';
 import 'package:subscription_manage/feature/setting/presentation/screen/setting_screen.dart';
 
 import '../../../../core/exported_files/exported_file.dart';
 import '../controller/main_bottom_nav_controller.dart';
+import '../../../setting/presentation/controller/setting_controller.dart';
 
 class MainBottomNavScreen extends StatelessWidget {
   MainBottomNavScreen({super.key});
@@ -12,128 +13,144 @@ class MainBottomNavScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      body: Obx(() {
-        final index = controller.selectedIndex.value;
-        Widget buildContent() {
-          switch (index) {
-            case 0:
-              return RepaintBoundary(child: SubscriptionScreen());
-            case 2:
-              return RepaintBoundary(child: SettingScreen());
-            default:
-              return RepaintBoundary(child: SubscriptionScreen());
-          }
-        }
+    return GetBuilder<SettingController>(
+      builder: (_) {
+        final brightness = Theme.of(context).brightness;
+        final surfaceGradient = brightness == Brightness.dark
+            ? AppColors.surfaceGradient
+            : const LinearGradient(
+                colors: [Color(0xFFFFFFFF), Color(0xFFF1F5F9)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              );
+        final borderColor = Theme.of(context).dividerColor.withValues(alpha: 0.6);
+        final shadowColor = brightness == Brightness.dark
+            ? Colors.black.withValues(alpha: 0.25)
+            : Colors.black.withValues(alpha: 0.08);
 
-        return buildContent();
-      }),
-      bottomNavigationBar: SafeArea(
-        top: false,
-        child: SizedBox(
-          height: 100,
-          child: Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.topCenter,
-            children: [
-              Positioned.fill(
-                top: 12,
-                child: ClipPath(
-                  clipper: _BottomNavClipper(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF1B1F2A), Color(0xFF0F1116)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(24),
-                        topRight: Radius.circular(24),
-                      ),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.04),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.25),
-                          blurRadius: 16,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
-                    padding: const EdgeInsets.only(
-                      top: 18,
-                      left: 22,
-                      right: 22,
-                      bottom: 12,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Obx(
-                            () => _BottomNavItem(
-                              icon: Icons.subscriptions_outlined,
-                              isSelected: controller.selectedIndex.value == 0,
-                              onTap: () => controller.changeTab(0),
-                              alignment: Alignment.centerLeft,
-                            ),
+        return Scaffold(
+          extendBody: true,
+          body: Obx(() {
+            final index = controller.selectedIndex.value;
+            Widget buildContent() {
+              switch (index) {
+                case 0:
+                  return RepaintBoundary(child: SubscriptionScreen());
+                case 2:
+                  return RepaintBoundary(child: SettingScreen());
+                default:
+                  return RepaintBoundary(child: SubscriptionScreen());
+              }
+            }
+
+            return buildContent();
+          }),
+          bottomNavigationBar: SafeArea(
+            top: false,
+            child: SizedBox(
+              height: 100,
+              child: Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.topCenter,
+                children: [
+                  Positioned.fill(
+                    top: 12,
+                    child: ClipPath(
+                      clipper: _BottomNavClipper(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: surfaceGradient,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(24),
+                            topRight: Radius.circular(24),
                           ),
-                        ),
-                        const SizedBox(width: 92),
-                        Expanded(
-                          child: Obx(
-                            () => _BottomNavItem(
-                              icon: Icons.settings_outlined,
-                              isSelected: controller.selectedIndex.value == 2,
-                              onTap: () => controller.changeTab(2),
-                              alignment: Alignment.centerRight,
+                          border: Border.all(color: borderColor),
+                          boxShadow: [
+                            BoxShadow(
+                              color: shadowColor,
+                              blurRadius: 16,
+                              offset: const Offset(0, 8),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                        padding: const EdgeInsets.only(
+                          top: 18,
+                          left: 22,
+                          right: 22,
+                          bottom: 12,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Obx(
+                                () => _BottomNavItem(
+                                  icon: Icons.subscriptions_outlined,
+                                  isSelected: controller.selectedIndex.value == 0,
+                                  onTap: () => controller.changeTab(0),
+                                  alignment: Alignment.centerLeft,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 92),
+                            Expanded(
+                              child: Obx(
+                                () => _BottomNavItem(
+                                  icon: Icons.settings_outlined,
+                                  isSelected: controller.selectedIndex.value == 2,
+                                  onTap: () => controller.changeTab(2),
+                                  alignment: Alignment.centerRight,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-
-              Positioned(
-                top: -28,
-                child: GestureDetector(
-                  onTap: () => Get.toNamed(AppRoutes.createScreen),
-                  child: Container(
-                    width: 84,
-                    height: 84,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF8A7CFF), Color(0xFF4F46E5)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(
-                            0xFF4F46E5,
-                          ).withValues(alpha: 0.18),
-                          blurRadius: 14,
-                          offset: const Offset(0, 8),
+                  Positioned(
+                    top: -28,
+                    child: GestureDetector(
+                      onTap: () => Get.toNamed(AppRoutes.createScreen),
+                      child: Container(
+                        width: 84,
+                        height: 84,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF8A7CFF), Color(0xFF4F46E5)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(
+                                0xFF4F46E5,
+                              ).withValues(alpha: 0.18),
+                              blurRadius: 14,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                          border: Border.all(
+                            color: borderColor,
+                            width: 1.2,
+                          ),
                         ),
-                      ],
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.06),
-                        width: 1.2,
+                        child: Icon(
+                          Icons.add,
+                          size: 36,
+                          color: brightness == Brightness.dark
+                              ? Colors.white
+                              : AppColors.onMainColor,
+                        ),
                       ),
                     ),
-                    child: const Icon(Icons.add, size: 36, color: Colors.white),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -153,6 +170,7 @@ class _BottomNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
     return InkWell(
       onTap: onTap,
       child: Align(
@@ -179,7 +197,11 @@ class _BottomNavItem extends StatelessWidget {
                 child: Icon(
                   icon,
                   size: isSelected ? 22 : 20,
-                  color: isSelected ? Colors.white : const Color(0xFFBFC7D6),
+                  color: isSelected
+                      ? AppColors.white
+                      : (brightness == Brightness.dark
+                          ? AppColors.darkSecondaryText
+                          : AppColors.lightSecondaryText),
                 ),
               ),
               const SizedBox(height: 6),
@@ -187,9 +209,7 @@ class _BottomNavItem extends StatelessWidget {
                 width: 6,
                 height: 6,
                 decoration: BoxDecoration(
-                  color: isSelected
-                      ? const Color(0xFF8A7CFF)
-                      : Colors.transparent,
+                  color: isSelected ? AppColors.purple : Colors.transparent,
                   borderRadius: BorderRadius.circular(3),
                 ),
               ),

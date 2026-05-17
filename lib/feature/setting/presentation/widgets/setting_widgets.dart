@@ -34,7 +34,7 @@ class SettingSectionHeader extends StatelessWidget {
           text: title,
           fontSize: 13,
           fontWeight: FontWeight.w800,
-          color: Colors.white,
+          color: AppColors.onMainColor,
           letterSpacing: 1.0,
         ),
       ],
@@ -46,26 +46,22 @@ class SettingCard extends StatelessWidget {
   const SettingCard({
     super.key,
     required this.children,
-    this.gradient = const LinearGradient(
-      colors: [Color(0xFF20202A), Color(0xFF17171F)],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    ),
+    this.gradient,
   });
 
   final List<Widget> children;
-  final Gradient gradient;
+  final Gradient? gradient;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: gradient,
+        gradient: gradient ?? AppColors.pillGradient,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+        border: Border.all(color: AppColors.borderColor.withValues(alpha: 0.55)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.22),
+            color: Colors.black.withValues(alpha: AppColors.isDarkMode ? 0.22 : 0.08),
             blurRadius: 22,
             offset: const Offset(0, 10),
           ),
@@ -94,8 +90,8 @@ class SettingTile extends StatelessWidget {
       end: Alignment.bottomRight,
     ),
     this.backgroundGradient,
-    this.titleColor = Colors.white,
-    this.subtitleColor = const Color(0xFFB8C1D1),
+    this.titleColor,
+    this.subtitleColor,
     this.extraContent,
   });
 
@@ -107,13 +103,19 @@ class SettingTile extends StatelessWidget {
   final IconData leadingIcon;
   final Gradient leadingGradient;
   final Gradient? backgroundGradient;
-  final Color titleColor;
-  final Color subtitleColor;
+  final Color? titleColor;
+  final Color? subtitleColor;
   final Widget? extraContent;
 
   @override
   Widget build(BuildContext context) {
-    final Color rowOpacity = enabled ? Colors.white.withValues(alpha: 0.06) : Colors.white.withValues(alpha: 0.03);
+    final Color rowOpacity = enabled
+      ? AppColors.isDarkMode
+        ? Colors.white.withValues(alpha: 0.06)
+        : Colors.black.withValues(alpha: 0.03)
+      : AppColors.isDarkMode
+        ? Colors.white.withValues(alpha: 0.03)
+        : Colors.black.withValues(alpha: 0.02);
 
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 180),
@@ -126,7 +128,7 @@ class SettingTile extends StatelessWidget {
             gradient: backgroundGradient,
             color: backgroundGradient == null ? rowOpacity : null,
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+            border: Border.all(color: AppColors.borderColor.withValues(alpha: 0.45)),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           child: Column(
@@ -164,7 +166,7 @@ class SettingTile extends StatelessWidget {
                           text: title.tr.toUpperCase(),
                           fontSize: 12.8,
                           fontWeight: FontWeight.w800,
-                          color: titleColor,
+                          color: titleColor ?? AppColors.onMainColor,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),

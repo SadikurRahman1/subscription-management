@@ -29,16 +29,12 @@ class ToggleSummaryCard extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFF171C27), Color(0xFF121722)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          gradient: AppColors.surfaceGradient,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.07)),
+          border: Border.all(color: AppColors.borderColor.withValues(alpha: 0.55)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.16),
+              color: Colors.black.withValues(alpha: AppColors.isDarkMode ? 0.16 : 0.08),
               blurRadius: 12,
               offset: const Offset(0, 6),
             ),
@@ -54,7 +50,7 @@ class ToggleSummaryCard extends StatelessWidget {
                     text: title,
                     fontSize: 13,
                     fontWeight: FontWeight.w800,
-                    color: const Color(0xFFD2DAEC),
+                    color: AppColors.onMainSecondary,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -86,7 +82,7 @@ class ToggleSummaryCard extends StatelessWidget {
               text: value,
               fontSize: 30,
               fontWeight: FontWeight.w900,
-              color: Colors.white,
+              color: AppColors.onMainSecondary,
             ),
             const SizedBox(height: 12),
             // Active subscriptions pill (styled to match app)
@@ -94,9 +90,9 @@ class ToggleSummaryCard extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.06),
+                color: AppColors.onMainSecondary.withValues(alpha: 0.06),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
+                border: Border.all(color: AppColors.onMainSecondary.withValues(alpha: 0.03)),
               ),
               child: Row(
                 children: [
@@ -109,7 +105,7 @@ class ToggleSummaryCard extends StatelessWidget {
                       }),
                       fontSize: 13,
                       fontWeight: FontWeight.w800,
-                      color: const Color(0xFFD7DCEC),
+                      color: AppColors.onMainSecondary,
                     ),
                   ),
                 ],

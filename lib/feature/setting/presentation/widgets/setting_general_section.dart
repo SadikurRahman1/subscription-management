@@ -13,11 +13,7 @@ class SettingGeneralSection extends StatelessWidget {
     return _SettingSectionBlock(
       title: 'general',
       accentColor: const Color(0xFF52D1FF),
-      cardGradient: const LinearGradient(
-        colors: [Color(0xFF182233), Color(0xFF121826)],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
+      cardGradient: AppColors.elevatedSurfaceGradient,
       children: [
         Obx(
           () => SettingTile(

@@ -4,7 +4,7 @@ import 'package:subscription_manage/feature/subscription/presentation/widgets/su
 import 'package:subscription_manage/feature/subscription/presentation/widgets/toggle_summary_card.dart';
 import '../../../../core/exported_files/exported_file.dart';
 import '../controller/subscription_controller.dart';
-import '../screens/subscription_details_screen.dart';
+import 'subscription_details_screen.dart';
 
 class SubscriptionScreen extends GetView<SubscriptionController> {
   const SubscriptionScreen({super.key});
@@ -12,12 +12,16 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0C0F16),
+      backgroundColor: AppColors.bgColor,
       body: RepaintBoundary(
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF0C0F16), Color(0xFF121722), Color(0xFF0C0F16)],
+              colors: [
+                AppColors.bgColor,
+                AppColors.mainColor,
+                AppColors.bgColor,
+              ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -102,10 +106,10 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF171C27),
+                        gradient: AppColors.surfaceGradient,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.07),
+                          color: AppColors.borderColor.withValues(alpha: 0.55),
                         ),
                       ),
                       child: const ResponsiveText(

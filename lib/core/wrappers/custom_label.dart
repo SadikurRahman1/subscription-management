@@ -11,7 +11,7 @@ class CustomLabel extends StatelessWidget {
       text: text,
       fontSize: 13,
       fontWeight: FontWeight.w800,
-      color: Colors.white,
+      color: AppColors.onMainColor,
       letterSpacing: 0.6,
     );
   }

@@ -21,6 +21,7 @@ class CurrencyOption {
 
 class SettingController extends GetxController {
   static const String currencyCodeKey = 'currency_code_key';
+  static const String themeModeKey = 'theme_mode_key';
 
   final RxString selectedCurrency = 'USD'.obs;
   final RxString selectedLanguage = 'English'.obs;
@@ -54,18 +55,26 @@ class SettingController extends GetxController {
   ];
   final List<int> reminderHourOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   final List<String> reminderMinuteOptions = [
+    '00',
+    '05',
     '10',
+    '15',
     '20',
+    '25',
     '30',
+    '35',
     '40',
+    '45',
     '50',
-    '60',
+    '55',
+    
   ];
   final List<String> reminderPeriodOptions = ['am', 'pm'];
 
   @override
   void onInit() {
     super.onInit();
+    _restoreThemePreference();
     _restoreCurrencyPreference();
     _restoreLanguagePreference();
   }
@@ -88,6 +97,8 @@ class SettingController extends GetxController {
 
   String get selectedCurrencyName => selectedCurrencyOption.name;
 
+  ThemeMode get currentThemeMode => _themeModeFromLabel(selectedTheme.value);
+
   void _restoreCurrencyPreference() {
     final String? savedCurrencyCode = STService().getData(currencyCodeKey);
     if (savedCurrencyCode == null) {
@@ -107,7 +118,12 @@ class SettingController extends GetxController {
     _applyLanguage(value);
   }
 
-  void selectTheme(String value) => selectedTheme.value = value;
+  void selectTheme(String value) {
+    selectedTheme.value = value;
+    STService().saveData(themeModeKey, value);
+    Get.changeThemeMode(_themeModeFromLabel(value));
+    update();
+  }
 
   void selectReminderCadence(String value) =>
       selectedReminderCadence.value = value;
@@ -131,6 +147,19 @@ class SettingController extends GetxController {
 
   void setPaymentReminderEnabled(bool value) =>
       paymentReminderEnabled.value = value;
+
+  void _restoreThemePreference() {
+    final String? savedTheme = STService().getData(themeModeKey);
+    if (savedTheme == null || !themeOptions.contains(savedTheme)) {
+      Get.changeThemeMode(ThemeMode.system);
+      update();
+      return;
+    }
+
+    selectedTheme.value = savedTheme;
+    Get.changeThemeMode(_themeModeFromLabel(savedTheme));
+    update();
+  }
 
   Future<void> _restoreLanguagePreference() async {
     final Locale? savedLocale = LanguageService.getSavedLocale();
@@ -159,6 +188,17 @@ class SettingController extends GetxController {
     }
 
     return 'English';
+  }
+
+  ThemeMode _themeModeFromLabel(String value) {
+    switch (value) {
+      case 'Light':
+        return ThemeMode.light;
+      case 'Dark':
+        return ThemeMode.dark;
+      default:
+        return ThemeMode.system;
+    }
   }
 
   Future<void> openCurrencySheet() {
@@ -204,8 +244,8 @@ class SettingController extends GetxController {
 
     return Get.bottomSheet(
       Container(
-        decoration: const BoxDecoration(
-          color: Color(0xFF14151C),
+        decoration: BoxDecoration(
+          color: AppColors.mainColor,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         padding: const EdgeInsets.fromLTRB(20, 14, 20, 20),
@@ -230,7 +270,7 @@ class SettingController extends GetxController {
                   text: 'reminder_time',
                   fontSize: 15,
                   fontWeight: FontWeight.w800,
-                  color: Colors.white,
+                  color: AppColors.onMainColor,
                 ),
                 const SizedBox(height: 8),
                 Obx(
@@ -239,15 +279,15 @@ class SettingController extends GetxController {
                         '${selectedReminderHour.value.toString().padLeft(2, '0')}:${selectedReminderMinute.value} ${selectedReminderPeriod.value}',
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
-                    color: const Color(0xFFB8C1D1),
+                    color: AppColors.onMainSecondary,
                   ),
                 ),
                 const SizedBox(height: 16),
-                const ResponsiveText(
+                ResponsiveText(
                   text: 'hour',
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: AppColors.onMainColor,
                 ),
                 const SizedBox(height: 10),
                 Obx(
@@ -267,8 +307,8 @@ class SettingController extends GetxController {
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.w700,
                               color: selectedReminderHour.value == hour
-                                  ? Colors.white
-                                  : const Color.fromARGB(255, 13, 14, 14),
+                                  ? AppColors.white
+                                  : AppColors.onMainColor,
                             ),
                             onSelected: (_) => selectReminderHour(hour),
                             showCheckmark: false,
@@ -278,11 +318,11 @@ class SettingController extends GetxController {
                   ),
                 ),
                 const SizedBox(height: 14),
-                const ResponsiveText(
+                ResponsiveText(
                   text: 'minute',
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: AppColors.onMainColor,
                 ),
                 const SizedBox(height: 10),
                 Obx(
@@ -302,8 +342,8 @@ class SettingController extends GetxController {
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.w700,
                               color: selectedReminderMinute.value == minute
-                                  ? Colors.white
-                                  : const Color.fromARGB(255, 13, 14, 14),
+                                  ? AppColors.white
+                                  : AppColors.onMainColor,
                             ),
                             onSelected: (_) => selectReminderMinute(minute),
                             showCheckmark: false,
@@ -313,11 +353,11 @@ class SettingController extends GetxController {
                   ),
                 ),
                 const SizedBox(height: 14),
-                const ResponsiveText(
+                ResponsiveText(
                   text: 'am_pm',
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: AppColors.onMainColor,
                 ),
                 const SizedBox(height: 10),
                 Obx(
@@ -336,8 +376,8 @@ class SettingController extends GetxController {
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.w700,
                               color: selectedReminderPeriod.value == period
-                                  ? Colors.white
-                                  : const Color.fromARGB(255, 13, 14, 14),
+                                  ? AppColors.white
+                                  : AppColors.onMainColor,
                             ),
                             onSelected: (_) => selectReminderPeriod(period),
                             showCheckmark: false,
@@ -400,8 +440,8 @@ class SettingController extends GetxController {
   }) {
     return Get.bottomSheet(
       Container(
-        decoration: const BoxDecoration(
-          color: Color(0xFF14151C),
+        decoration: BoxDecoration(
+          color: AppColors.mainColor,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         padding: const EdgeInsets.fromLTRB(20, 14, 20, 20),
@@ -426,7 +466,7 @@ class SettingController extends GetxController {
                 text: title,
                 fontSize: 15,
                 fontWeight: FontWeight.w800,
-                color: Colors.white,
+                color: AppColors.onMainColor,
               ),
               const SizedBox(height: 14),
               ...options.map(
@@ -461,7 +501,7 @@ class SettingController extends GetxController {
                               text: option,
                               fontSize: 13.5,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white,
+                              color: AppColors.onMainColor,
                             ),
                           ),
                           if (option == selectedValue)

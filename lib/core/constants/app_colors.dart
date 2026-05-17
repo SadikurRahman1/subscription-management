@@ -98,4 +98,98 @@ class AppColors {
   static Color get handleColor => isDarkMode ? Colors.white24 : Colors.black26;
   static Color get inputFillColor =>
       isDarkMode ? Colors.white10 : Colors.black.withValues(alpha: 0.04);
+
+    static LinearGradient get surfaceGradient => isDarkMode
+            ? const LinearGradient(
+                    colors: [Color(0xFF171C27), Color(0xFF121722)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                )
+            : LinearGradient(
+                    colors: [lightMainColor, const Color(0xFFF1F5F9)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                );
+
+    static LinearGradient get elevatedSurfaceGradient => isDarkMode
+            ? const LinearGradient(
+                    colors: [Color(0xFF182233), Color(0xFF121826)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                )
+            : LinearGradient(
+                    colors: [lightMainColor, const Color(0xFFEFF4FB)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                );
+
+    static LinearGradient get pillGradient => isDarkMode
+            ? const LinearGradient(
+                    colors: [Color(0xFF20202A), Color(0xFF17171F)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                )
+            : LinearGradient(
+                    colors: [lightMainColor, const Color(0xFFF4F7FC)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                );
+
+    static ThemeData get lightThemeData => ThemeData(
+                useMaterial3: true,
+                brightness: Brightness.light,
+                scaffoldBackgroundColor: lightBgColor,
+                colorScheme: ColorScheme.fromSeed(
+                    seedColor: primary,
+                    brightness: Brightness.light,
+                ).copyWith(
+                    primary: primary,
+                    secondary: secondary,
+                    surface: lightMainColor,
+                    error: danger,
+                ),
+                appBarTheme: const AppBarTheme(
+                    backgroundColor: lightBgColor,
+                    foregroundColor: lightPrimaryText,
+                    elevation: 0,
+                    centerTitle: false,
+                    iconTheme: IconThemeData(color: lightPrimaryText),
+                ),
+                cardColor: lightMainColor,
+                dividerColor: lightBorderColor,
+                textTheme: const TextTheme(
+                    bodyLarge: TextStyle(color: lightPrimaryText),
+                    bodyMedium: TextStyle(color: lightPrimaryText),
+                    bodySmall: TextStyle(color: lightSecondaryText),
+                ),
+            );
+
+    static ThemeData get darkThemeData => ThemeData(
+                useMaterial3: true,
+                brightness: Brightness.dark,
+                scaffoldBackgroundColor: darkBgColor,
+                colorScheme: ColorScheme.fromSeed(
+                    seedColor: purple,
+                    brightness: Brightness.dark,
+                ).copyWith(
+                    primary: purple,
+                    secondary: secondary,
+                    surface: darkMainColor,
+                    error: danger,
+                ),
+                appBarTheme: const AppBarTheme(
+                    backgroundColor: darkBgColor,
+                    foregroundColor: darkPrimaryText,
+                    elevation: 0,
+                    centerTitle: false,
+                    iconTheme: IconThemeData(color: darkPrimaryText),
+                ),
+                cardColor: darkMainColor,
+                dividerColor: darkBorderColor,
+                textTheme: const TextTheme(
+                    bodyLarge: TextStyle(color: darkPrimaryText),
+                    bodyMedium: TextStyle(color: darkPrimaryText),
+                    bodySmall: TextStyle(color: darkSecondaryText),
+                ),
+            );
 }

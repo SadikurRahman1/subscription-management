@@ -16,7 +16,7 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0C0F16),
+      backgroundColor: AppColors.bgColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: false,
@@ -26,9 +26,9 @@ class SettingScreen extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.w800),
         ),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF151824), Color(0xFF0C0F16)],
+              colors: [AppColors.mainColor, AppColors.bgColor],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -37,9 +37,9 @@ class SettingScreen extends StatelessWidget {
       ),
       body:RepaintBoundary(
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF0C0F16), Color(0xFF10131C), Color(0xFF0C0F16)],
+            colors: [AppColors.bgColor, AppColors.mainColor, AppColors.bgColor],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),

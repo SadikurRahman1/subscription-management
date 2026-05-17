@@ -10,11 +10,7 @@ class SettingAboutSection extends StatelessWidget {
     return _SettingSectionBlock(
       title: 'about',
       accentColor: const Color(0xFF9C8CFF),
-      cardGradient: const LinearGradient(
-        colors: [Color(0xFF1E1631), Color(0xFF141724)],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
+      cardGradient: AppColors.elevatedSurfaceGradient,
       children: const [_PrivacyTile(), SizedBox(height: 10), _TermsTile()],
     );
   }

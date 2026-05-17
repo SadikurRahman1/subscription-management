@@ -19,24 +19,20 @@ class PremiumTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF171C27), Color(0xFF121722)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        gradient: AppColors.surfaceGradient,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.07)),
+        border: Border.all(color: AppColors.borderColor.withValues(alpha: 0.55)),
       ),
       child: TextField(
         controller: controller,
         keyboardType: keyboardType,
         maxLines: maxLines,
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        style: TextStyle(color: AppColors.onMainColor, fontWeight: FontWeight.w600),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: const TextStyle(color: Color(0xFF80889B)),
+          hintStyle: TextStyle(color: AppColors.onMainSecondary.withValues(alpha: 0.8)),
           prefixText: prefixText,
-          prefixStyle: const TextStyle(color: Color(0xFFE0E5F2), fontWeight: FontWeight.w700),
+          prefixStyle: TextStyle(color: AppColors.onMainColor, fontWeight: FontWeight.w700),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         ),

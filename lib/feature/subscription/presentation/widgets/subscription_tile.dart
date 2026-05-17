@@ -65,16 +65,12 @@ class SubscriptionTile extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFF181D29), Color(0xFF10141D)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            gradient: AppColors.surfaceGradient,
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.07)),
+            border: Border.all(color: AppColors.borderColor.withValues(alpha: 0.55)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.14),
+                color: Colors.black.withValues(alpha: AppColors.isDarkMode ? 0.14 : 0.08),
                 blurRadius: 14,
                 offset: const Offset(0, 8),
               ),
@@ -108,14 +104,14 @@ class SubscriptionTile extends StatelessWidget {
                       text: item.subscriptionName,
                       fontSize: 14,
                       fontWeight: FontWeight.w900,
-                      color: Colors.white,
+                      color: AppColors.onMainColor,
                     ),
                     const SizedBox(height: 3),
                     ResponsiveText(
                       text: subtitle,
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFFB8C1D1),
+                      color: AppColors.onMainSecondary,
                     ),
                   ],
                 ),
@@ -128,7 +124,7 @@ class SubscriptionTile extends StatelessWidget {
                     text: '${_currencySymbol()} ${_formatAmount(item.cost)}',
                     fontSize: 17,
                     fontWeight: FontWeight.w900,
-                    color: Colors.white,
+                    color: AppColors.onMainColor,
                   ),
                   const SizedBox(height: 6),
                   Container(

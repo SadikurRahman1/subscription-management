@@ -13,11 +13,7 @@ class SettingNotificationsSection extends StatelessWidget {
     return _SettingSectionBlock(
       title: 'notifications',
       accentColor: const Color(0xFFFF7AB6),
-      cardGradient: const LinearGradient(
-        colors: [Color(0xFF281A2F), Color(0xFF141A29)],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
+      cardGradient: AppColors.elevatedSurfaceGradient,
       children: [
         Obx(
           () => SettingTile(

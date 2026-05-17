@@ -10,11 +10,7 @@ class SettingMoreInfoSection extends StatelessWidget {
     return _SettingSectionBlock(
       title: 'more_info',
       accentColor: const Color(0xFFFFC857),
-      cardGradient: const LinearGradient(
-        colors: [Color(0xFF241D14), Color(0xFF14171F)],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
+      cardGradient: AppColors.elevatedSurfaceGradient,
       children: [
         SettingTile(
           title: 'version',

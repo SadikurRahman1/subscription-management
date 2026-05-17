@@ -1,7 +1,7 @@
 import 'package:subscription_manage/core/exported_files/exported_file.dart';
 
-class PaymentMethodChip extends StatelessWidget {
-  const PaymentMethodChip({super.key, 
+class SelectablePill extends StatelessWidget {
+  const SelectablePill({super.key, 
     required this.label,
     required this.isSelected,
     required this.onTap,
@@ -17,25 +17,24 @@ class PaymentMethodChip extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        width: 64,
-        height: 44,
+        height: 46,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           gradient: isSelected
-              ? const LinearGradient(colors: [Color(0xFF52D1FF), Color(0xFF1CB5E0)])
-              : const LinearGradient(colors: [Color(0xFF171C27), Color(0xFF121722)]),
+              ? const LinearGradient(colors: [Color(0xFF8A7CFF), Color(0xFF4F46E5)])
+              : AppColors.surfaceGradient,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFF7CE4FF)
-                : Colors.white.withValues(alpha: 0.07),
+                ? const Color(0xFFA698FF)
+                : AppColors.borderColor.withValues(alpha: 0.55),
           ),
         ),
         child: ResponsiveText(
           text: label,
-          fontSize: 10.5,
+          fontSize: 12.5,
           fontWeight: FontWeight.w800,
-          color: isSelected ? const Color(0xFF05151D) : const Color(0xFFCDD4E5),
+          color: isSelected ? Colors.white : AppColors.onMainSecondary,
         ),
       ),
     );

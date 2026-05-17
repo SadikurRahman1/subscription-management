@@ -28,7 +28,11 @@ DateTime? _safeParseDate(String value) {
   return DateTime(year, month, day);
 }
 
-class CreateController extends GetxController {
+class SubscriptionFormController extends GetxController {
+  SubscriptionFormController({this.editingSubscription});
+
+  final SubscriptionModel? editingSubscription;
+
   final TextEditingController subscriptionNameController =
       TextEditingController();
   final TextEditingController costController = TextEditingController();
@@ -47,10 +51,24 @@ class CreateController extends GetxController {
   final SubscriptionStorageService _storageService =
       SubscriptionStorageService.instance;
 
+  bool get isEditing => editingSubscription != null;
+
   @override
   void onInit() {
     super.onInit();
+    if (editingSubscription != null) {
+      _loadEditingSubscription(editingSubscription!);
+    }
     loadSavedSubscriptions();
+  }
+
+  void _loadEditingSubscription(SubscriptionModel subscription) {
+    subscriptionNameController.text = subscription.subscriptionName;
+    costController.text = subscription.cost.toStringAsFixed(2);
+    noteController.text = subscription.note ?? '';
+    selectedCycle.value = subscription.paymentCycle;
+    selectedStartDate.value = _formatDate(subscription.startDate);
+    selectedPaymentMethod.value = subscription.paymentMethod;
   }
 
   void selectCycle(String cycle) => selectedCycle.value = cycle;
@@ -68,6 +86,8 @@ class CreateController extends GetxController {
     final DateTime initialDate =
         _safeParseDate(selectedStartDate.value) ?? DateTime.now();
 
+    final bool useDarkPicker = Theme.of(context).brightness == Brightness.dark;
+
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
@@ -75,10 +95,24 @@ class CreateController extends GetxController {
       lastDate: DateTime(2100),
       builder: (context, child) {
         return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: Color(0xFF8A7CFF),
-              surface: Color(0xFF171A22),
+          data: (useDarkPicker ? ThemeData.dark() : ThemeData.light()).copyWith(
+            colorScheme: ColorScheme(
+              brightness: useDarkPicker ? Brightness.dark : Brightness.light,
+              primary: AppColors.purple,
+              onPrimary: AppColors.white,
+              secondary: AppColors.primary,
+              onSecondary: AppColors.white,
+              error: AppColors.danger,
+              onError: AppColors.white,
+              surface:
+                  useDarkPicker ? AppColors.darkMainColor : AppColors.lightMainColor,
+              onSurface: useDarkPicker
+                  ? AppColors.darkPrimaryText
+                  : AppColors.lightPrimaryText,
+            ),
+            dialogTheme: DialogThemeData(
+              backgroundColor:
+                  useDarkPicker ? AppColors.darkMainColor : AppColors.lightMainColor,
             ),
           ),
           child: child!,
@@ -118,6 +152,28 @@ class CreateController extends GetxController {
         colorText: Colors.white,
         margin: const EdgeInsets.all(16),
       );
+      return;
+    }
+
+    if (isEditing) {
+      final SubscriptionModel updated = SubscriptionModel(
+        id: editingSubscription!.id,
+        subscriptionName: subscriptionName,
+        cost: cost,
+        paymentCycle: selectedCycle.value,
+        startDate: startDate ?? editingSubscription!.startDate,
+        paymentMethod: selectedPaymentMethod.value,
+        note: noteController.text.trim().isEmpty
+            ? null
+            : noteController.text.trim(),
+        createdAt: editingSubscription!.createdAt,
+      );
+
+      await _storageService.updateSubscription(updated);
+      if (Get.isRegistered<SubscriptionController>()) {
+        await Get.find<SubscriptionController>().loadSubscriptions();
+      }
+      Get.back();
       return;
     }
 
