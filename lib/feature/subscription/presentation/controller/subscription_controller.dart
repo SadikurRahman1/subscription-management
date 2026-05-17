@@ -1,126 +1,121 @@
-
 import '../../../../core/exported_files/exported_file.dart';
+import '../../../../core/models/subscription_model.dart';
+import '../../../../core/services/storage_services/subscription_storage_service.dart';
 
 class SubscriptionController extends GetxController {
-	final RxString selectedSpendFilter = 'Monthly'.obs;
+  final RxString selectedSpendFilter = 'Monthly'.obs;
+  final RxBool isLoading = false.obs;
+  final RxList<SubscriptionModel> subscriptions = <SubscriptionModel>[].obs;
 
-	final List<String> spendFilters = ['Monthly', 'Yearly', 'All'];
+  final List<String> spendFilters = ['Monthly', 'Yearly', 'All'];
 
-	final List<SubscriptionItem> subscriptions = const [
-		SubscriptionItem(
-			name: 'Spotify',
-			amount: 50,
-			cycle: 'Month',
-			nextBilling: '18 Jun 2026',
-			status: SubscriptionStatus.upcoming,
-			daysLeft: 14,
-		),
-		SubscriptionItem(
-			name: 'Netflix',
-			amount: 1200,
-			cycle: 'Year',
-			nextBilling: '15 Nov 2026',
-			status: SubscriptionStatus.active,
-			daysLeft: 185,
-		),
-		SubscriptionItem(
-			name: 'Canva Pro',
-			amount: 100,
-			cycle: 'Month',
-			nextBilling: '05 May 2026',
-			status: SubscriptionStatus.expired,
-			daysLeft: 0,
-		),
-	];
+  final SubscriptionStorageService _storageService =
+      SubscriptionStorageService.instance;
 
-	void changeSpendFilter(String filter) {
-		selectedSpendFilter.value = filter;
-	}
+  @override
+  void onInit() {
+    super.onInit();
+    loadSubscriptions();
+  }
 
-	List<SubscriptionItem> get allSubscriptions => subscriptions;
+  void changeSpendFilter(String filter) {
+    selectedSpendFilter.value = filter;
+  }
 
-	List<SubscriptionItem> get upcomingSubscriptions => subscriptions
-			.where((item) => item.status == SubscriptionStatus.upcoming)
-			.toList(growable: false);
+  Future<void> loadSubscriptions() async {
+    isLoading.value = true;
+    try {
+      final List<SubscriptionModel> loadedSubscriptions = await _storageService
+          .readSubscriptions();
+      loadedSubscriptions.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      subscriptions.assignAll(loadedSubscriptions);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
-	List<SubscriptionItem> get expiredSubscriptions => subscriptions
-			.where((item) => item.status == SubscriptionStatus.expired)
-			.toList(growable: false);
+  List<SubscriptionModel> get allSubscriptions => subscriptions;
 
-	double get monthlySpend => subscriptions
-			.where((item) => item.cycle == 'Month')
-			.fold(0, (sum, item) => sum + item.amount);
+  List<SubscriptionModel> get monthlySubscriptions => subscriptions
+      .where((item) => item.paymentCycle == 'Monthly')
+      .toList(growable: false);
 
-	double get yearlySpend => subscriptions
-			.where((item) => item.cycle == 'Year')
-			.fold(0, (sum, item) => sum + item.amount);
+  List<SubscriptionModel> get yearlySubscriptions => subscriptions
+      .where((item) => item.paymentCycle == 'Yearly')
+      .toList(growable: false);
 
-	int get subscriptionCount => subscriptions.length;
+  int _cycleDurationDays(String paymentCycle) {
+    switch (paymentCycle) {
+      case 'Weekly':
+        return 7;
+      case 'Monthly':
+        return 30;
+      case 'Yearly':
+        return 365;
+      default:
+        return 30;
+    }
+  }
 
-	double get selectedSpend {
-		if (selectedSpendFilter.value == 'Monthly') {
-			return monthlySpend;
-		}
+  int remainingDays(SubscriptionModel item) {
+    final DateTime today = DateUtils.dateOnly(DateTime.now());
+    final DateTime startDate = DateUtils.dateOnly(item.startDate);
+    final DateTime expiryDate = startDate.add(
+      Duration(days: _cycleDurationDays(item.paymentCycle)),
+    );
+    return expiryDate.difference(today).inDays;
+  }
 
-		if (selectedSpendFilter.value == 'Yearly') {
-			return yearlySpend;
-		}
+  List<SubscriptionModel> get upcomingSubscriptions =>
+      subscriptions
+          .where((item) {
+            final int daysLeft = remainingDays(item);
+            return daysLeft > 0 && daysLeft <= 4;
+          })
+          .toList(growable: false)
+        ..sort((a, b) => remainingDays(a).compareTo(remainingDays(b)));
 
-		return monthlySpend + yearlySpend;
-	}
+  double get monthlySpend => subscriptions
+      .where((item) => item.paymentCycle == 'Monthly')
+      .fold(0, (sum, item) => sum + item.cost);
 
-	String get selectedSpendCaption {
-		if (selectedSpendFilter.value == 'Monthly') {
-			return 'Bills this month';
-		}
+  double get yearlySpend => subscriptions
+      .where((item) => item.paymentCycle == 'Yearly')
+      .fold(0, (sum, item) => sum + item.cost);
 
-		if (selectedSpendFilter.value == 'Yearly') {
-			return 'Bills this year';
-		}
+  int get subscriptionCount => subscriptions.length;
 
-		return 'All subscriptions spend';
-	}
+  double get selectedSpend {
+    if (selectedSpendFilter.value == 'Monthly') {
+      return monthlySpend;
+    }
 
-	String get topUpcomingTitle {
-		if (upcomingSubscriptions.isEmpty) {
-			return 'No upcoming bills';
-		}
+    if (selectedSpendFilter.value == 'Yearly') {
+      return yearlySpend;
+    }
 
-		return upcomingSubscriptions.first.name;
-	}
+    return monthlySpend + yearlySpend;
+  }
 
-	String get topUpcomingCycle {
-		if (upcomingSubscriptions.isEmpty) {
-			return '0 active subscriptions';
-		}
+  String get selectedSpendCaption {
+    if (selectedSpendFilter.value == 'Monthly') {
+      return 'Bills this month';
+    }
 
-		return '${upcomingSubscriptions.first.cycle}ly renewal';
-	}
+    if (selectedSpendFilter.value == 'Yearly') {
+      return 'Bills this year';
+    }
 
-	int get activeCount =>
-			subscriptions.where((item) => item.status == SubscriptionStatus.active).length;
+    return 'All subscriptions spend';
+  }
 
-	int get upcomingCount => upcomingSubscriptions.length;
+  Future<void> deleteSubscription(String id) async {
+    await _storageService.deleteSubscription(id);
+    await loadSubscriptions();
+  }
 
-	int get expiredCount => expiredSubscriptions.length;
-}
-
-enum SubscriptionStatus { active, upcoming, expired }
-
-class SubscriptionItem {
-	const SubscriptionItem({
-		required this.name,
-		required this.amount,
-		required this.cycle,
-		required this.nextBilling,
-		required this.status,
-		required this.daysLeft,
-	});
-
-	final String name;
-	final double amount;
-	final String cycle;
-	final String nextBilling;
-	final SubscriptionStatus status;
-	final int daysLeft;
+  Future<void> updateSubscription(SubscriptionModel subscription) async {
+    await _storageService.updateSubscription(subscription);
+    await loadSubscriptions();
+  }
 }

@@ -161,7 +161,7 @@ class SettingTile extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ResponsiveText(
-                          text: title.toUpperCase(),
+                          text: title.tr.toUpperCase(),
                           fontSize: 12.8,
                           fontWeight: FontWeight.w800,
                           color: titleColor,

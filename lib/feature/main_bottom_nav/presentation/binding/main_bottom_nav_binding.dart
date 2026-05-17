@@ -1,5 +1,6 @@
 import '../../../../core/exported_files/exported_file.dart';
 import 'package:subscription_manage/feature/subscription/presentation/controller/subscription_controller.dart';
+import 'package:subscription_manage/feature/setting/presentation/controller/setting_controller.dart';
 import '../controller/main_bottom_nav_controller.dart';
 
 class MainBottomNavBinding implements Bindings {
@@ -7,6 +8,7 @@ class MainBottomNavBinding implements Bindings {
 	void dependencies() {
 		
 		Get.lazyPut(() => SubscriptionController());
+		Get.lazyPut(() => SettingController());
     Get.lazyPut(() => MainBottomNavController());
 	}
 }

@@ -1,4 +1,3 @@
-import 'package:subscription_manage/feature/create/presentation/screen/create_screen.dart';
 import 'package:subscription_manage/feature/subscription/presentation/screen/subscription_screen.dart';
 import 'package:subscription_manage/feature/setting/presentation/screen/setting_screen.dart';
 
@@ -8,30 +7,28 @@ import '../controller/main_bottom_nav_controller.dart';
 class MainBottomNavScreen extends StatelessWidget {
   MainBottomNavScreen({super.key});
 
-  final MainBottomNavController controller = Get.find<MainBottomNavController>();
+  final MainBottomNavController controller =
+      Get.find<MainBottomNavController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: Obx(
-        () {
-          final index = controller.selectedIndex.value;
-          Widget buildContent() {
-            switch (index) {
-              case 0:
-                return RepaintBoundary(child: SubscriptionScreen());
-              case 1:
-                return RepaintBoundary(child: CreateScreen());
-              case 2:
-                return RepaintBoundary(child: SettingScreen());
-              default:
-                return RepaintBoundary(child: SubscriptionScreen());
-            }
+      body: Obx(() {
+        final index = controller.selectedIndex.value;
+        Widget buildContent() {
+          switch (index) {
+            case 0:
+              return RepaintBoundary(child: SubscriptionScreen());
+            case 2:
+              return RepaintBoundary(child: SettingScreen());
+            default:
+              return RepaintBoundary(child: SubscriptionScreen());
           }
-          return buildContent();
-        },
-      ),
+        }
+
+        return buildContent();
+      }),
       bottomNavigationBar: SafeArea(
         top: false,
         child: SizedBox(
@@ -55,7 +52,9 @@ class MainBottomNavScreen extends StatelessWidget {
                         topLeft: Radius.circular(24),
                         topRight: Radius.circular(24),
                       ),
-                      border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.04),
+                      ),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.25),
@@ -64,7 +63,12 @@ class MainBottomNavScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    padding: const EdgeInsets.only(top: 18, left: 22, right: 22, bottom: 12),
+                    padding: const EdgeInsets.only(
+                      top: 18,
+                      left: 22,
+                      right: 22,
+                      bottom: 12,
+                    ),
                     child: Row(
                       children: [
                         Expanded(
@@ -97,7 +101,7 @@ class MainBottomNavScreen extends StatelessWidget {
               Positioned(
                 top: -28,
                 child: GestureDetector(
-                  onTap: () => controller.changeTab(1),
+                  onTap: () => Get.toNamed(AppRoutes.createScreen),
                   child: Container(
                     width: 84,
                     height: 84,
@@ -110,18 +114,19 @@ class MainBottomNavScreen extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF4F46E5).withValues(alpha: 0.18),
+                          color: const Color(
+                            0xFF4F46E5,
+                          ).withValues(alpha: 0.18),
                           blurRadius: 14,
                           offset: const Offset(0, 8),
                         ),
                       ],
-                      border: Border.all(color: Colors.white.withValues(alpha: 0.06), width: 1.2),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.06),
+                        width: 1.2,
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.add,
-                      size: 36,
-                      color: Colors.white,
-                    ),
+                    child: const Icon(Icons.add, size: 36, color: Colors.white),
                   ),
                 ),
               ),
@@ -164,7 +169,9 @@ class _BottomNavItem extends StatelessWidget {
                 height: isSelected ? 44 : 36,
                 decoration: BoxDecoration(
                   gradient: isSelected
-                      ? const LinearGradient(colors: [Color(0xFF8A7CFF), Color(0xFF4F46E5)])
+                      ? const LinearGradient(
+                          colors: [Color(0xFF8A7CFF), Color(0xFF4F46E5)],
+                        )
                       : null,
                   color: isSelected ? null : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
@@ -180,7 +187,9 @@ class _BottomNavItem extends StatelessWidget {
                 width: 6,
                 height: 6,
                 decoration: BoxDecoration(
-                  color: isSelected ? const Color(0xFF8A7CFF) : Colors.transparent,
+                  color: isSelected
+                      ? const Color(0xFF8A7CFF)
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(3),
                 ),
               ),
@@ -191,7 +200,6 @@ class _BottomNavItem extends StatelessWidget {
     );
   }
 }
- 
 
 class _BottomNavClipper extends CustomClipper<Path> {
   @override

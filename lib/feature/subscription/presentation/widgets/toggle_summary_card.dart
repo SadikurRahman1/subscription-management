@@ -1,5 +1,14 @@
 import 'package:subscription_manage/core/exported_files/exported_file.dart';
+import 'package:subscription_manage/feature/setting/presentation/controller/setting_controller.dart';
 import '../controller/subscription_controller.dart';
+
+String _currencySymbol() {
+  if (Get.isRegistered<SettingController>()) {
+    return Get.find<SettingController>().selectedCurrencySymbol;
+  }
+
+  return r'$';
+}
 
 class ToggleSummaryCard extends StatelessWidget {
   const ToggleSummaryCard({super.key, required this.controller});
@@ -10,9 +19,12 @@ class ToggleSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       final bool isYearly = controller.selectedSpendFilter.value == 'Yearly';
-      final title = isYearly ? 'Yearly Spend' : 'Monthly Spend';
-      final value = '\$ ${controller.selectedSpend.toStringAsFixed(0)}';
-      final accent = isYearly ? const Color(0xFFFFC857) : const Color(0xFF52D1FF);
+      final title = isYearly ? 'yearly_spend' : 'monthly_spend';
+      final value =
+          '${_currencySymbol()} ${controller.selectedSpend.toStringAsFixed(0)}';
+      final accent = isYearly
+          ? const Color(0xFFFFC857)
+          : const Color(0xFF52D1FF);
 
       return Container(
         padding: const EdgeInsets.all(14),
@@ -48,7 +60,9 @@ class ToggleSummaryCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 InkWell(
                   onTap: () {
-                    controller.changeSpendFilter(isYearly ? 'Monthly' : 'Yearly');
+                    controller.changeSpendFilter(
+                      isYearly ? 'Monthly' : 'Yearly',
+                    );
                   },
                   borderRadius: BorderRadius.circular(10),
                   child: AnimatedRotation(
@@ -90,7 +104,9 @@ class ToggleSummaryCard extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: ResponsiveText(
-                      text: '${controller.subscriptionCount} Active subscription',
+                      text: 'saved_subscriptions_count'.trParams({
+                        'count': controller.subscriptionCount.toString(),
+                      }),
                       fontSize: 13,
                       fontWeight: FontWeight.w800,
                       color: const Color(0xFFD7DCEC),

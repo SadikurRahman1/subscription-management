@@ -1,5 +1,6 @@
 
 import 'package:subscription_manage/core/wrappers/custom_label.dart';
+import 'package:subscription_manage/feature/setting/presentation/controller/setting_controller.dart';
 import 'package:subscription_manage/feature/create/presentation/widgets/payment_method_chip.dart';
 import 'package:subscription_manage/feature/create/presentation/widgets/premium_text_field.dart';
 import 'package:subscription_manage/feature/create/presentation/widgets/selectable_pill.dart';
@@ -29,25 +30,25 @@ class CreateScreen extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(18, 14, 18, 120),
             children: [
-              CustomTitle(title: 'Create Subscription'),
+              const CustomTitle(title: 'create_subscription'),
               const SizedBox(height: 16),
-              CustomLabel(text: 'Subscription name'),
+              const CustomLabel(text: 'subscription_name'),
               const SizedBox(height: 8),
               PremiumTextField(
                 controller: controller.subscriptionNameController,
-                hintText: 'Netflix Premium',
+                hintText: 'netflix_premium'.tr,
               ),
               const SizedBox(height: 14),
-              CustomLabel(text: 'Cost'),
+              const CustomLabel(text: 'cost'),
               const SizedBox(height: 8),
               PremiumTextField(
                 controller: controller.costController,
                 hintText: '00.00',
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                prefixText: '\$',
+                prefixText: Get.find<SettingController>().selectedCurrencySymbol,
               ),
               const SizedBox(height: 14),
-              CustomLabel(text: 'Payment cycle'),
+              const CustomLabel(text: 'payment_cycle'),
               const SizedBox(height: 10),
               Obx(
                 () => Row(
@@ -70,7 +71,7 @@ class CreateScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              CustomLabel(text: 'Start Date'),
+              const CustomLabel(text: 'start_date'),
               const SizedBox(height: 8),
               Obx(
                 () => _TapField(
@@ -80,7 +81,7 @@ class CreateScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              CustomLabel(text: 'Payment Method'),
+              const CustomLabel(text: 'payment_method'),
               const SizedBox(height: 10),
               Obx(
                 () => Wrap(
@@ -98,20 +99,20 @@ class CreateScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              CustomLabel(text: 'Notification'),
-              const SizedBox(height: 8),
-              Obx(
-                () => _NotificationTile(
-                  enabled: controller.billingAlertEnabled.value,
-                  onChanged: controller.setBillingAlert,
-                ),
-              ),
+              // CustomLabel(text: 'Notification'),
+              // const SizedBox(height: 8),
+              // Obx(
+              //   () => _NotificationTile(
+              //     enabled: controller.billingAlertEnabled.value,
+              //     onChanged: controller.setBillingAlert,
+              //   ),
+              // ),
               const SizedBox(height: 14),
-              CustomLabel(text: 'Note (Optional)'),
+              const CustomLabel(text: 'note_optional'),
               const SizedBox(height: 8),
               PremiumTextField(
                 controller: controller.noteController,
-                hintText: 'Add any note...',
+                hintText: 'add_any_note'.tr,
                 maxLines: 3,
               ),
               const SizedBox(height: 24),
@@ -123,10 +124,6 @@ class CreateScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
 
 
 class _TapField extends StatelessWidget {
@@ -170,54 +167,6 @@ class _TapField extends StatelessWidget {
             Icon(icon, color: const Color(0xFF8A7CFF), size: 20),
           ],
         ),
-      ),
-    );
-  }
-}
-
-
-class _NotificationTile extends StatelessWidget {
-  const _NotificationTile({
-    required this.enabled,
-    required this.onChanged,
-  });
-
-  final bool enabled;
-  final ValueChanged<bool> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 52,
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF171C27), Color(0xFF121722)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.07)),
-      ),
-      child: Row(
-        children: [
-          const Expanded(
-            child: ResponsiveText(
-              text: 'Billing alert',
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFFE0E5F2),
-            ),
-          ),
-          Switch.adaptive(
-            value: enabled,
-            onChanged: onChanged,
-            activeThumbColor: Colors.white,
-            activeTrackColor: const Color(0xFF8A7CFF),
-            inactiveThumbColor: const Color(0xFF868FA3),
-            inactiveTrackColor: const Color(0xFF3A4252),
-          ),
-        ],
       ),
     );
   }
