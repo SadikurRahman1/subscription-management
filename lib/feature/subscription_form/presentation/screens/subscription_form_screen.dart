@@ -1,10 +1,10 @@
 import 'package:subscription_manage/core/models/subscription_model.dart';
+import 'package:subscription_manage/core/wrappers/custom_appbar.dart';
 import 'package:subscription_manage/core/wrappers/custom_label.dart';
 import 'package:subscription_manage/feature/subscription_form/presentation/widgets/payment_method_chip.dart';
 import 'package:subscription_manage/feature/subscription_form/presentation/widgets/premium_text_field.dart';
 import 'package:subscription_manage/feature/subscription_form/presentation/widgets/selectable_pill.dart';
 import 'package:subscription_manage/feature/subscription_form/presentation/widgets/tap_field.dart';
-
 import '../../../../core/exported_files/exported_file.dart';
 import '../../../setting/presentation/controller/setting_controller.dart';
 import '../controller/subscription_form_controller.dart';
@@ -13,7 +13,7 @@ class SubscriptionFormScreen extends StatelessWidget {
   const SubscriptionFormScreen({
     super.key,
     this.subscription,
-    this.showBackButton = false,
+    this.showBackButton = true,
     this.onBack,
   });
 
@@ -23,7 +23,8 @@ class SubscriptionFormScreen extends StatelessWidget {
 
   bool get _isEditing => subscription != null;
 
-  String get _title => _isEditing ? 'Update Subscription' : 'create_subscription';
+  String get _title =>
+      _isEditing ? 'Update Subscription' : 'create_subscription';
 
   String get _saveButtonText => _isEditing ? 'UPDATE' : 'SAVE';
 
@@ -34,7 +35,6 @@ class SubscriptionFormScreen extends StatelessWidget {
           ? SubscriptionFormController(editingSubscription: subscription)
           : SubscriptionFormController(),
       builder: (controller) {
-        final Brightness brightness = Theme.of(context).brightness;
         final String currencySymbol =
             Get.find<SettingController>().selectedCurrencySymbol;
 
@@ -43,7 +43,11 @@ class SubscriptionFormScreen extends StatelessWidget {
           body: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [AppColors.bgColor, AppColors.mainColor, AppColors.bgColor],
+                colors: [
+                  AppColors.bgColor,
+                  AppColors.mainColor,
+                  AppColors.bgColor,
+                ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -52,40 +56,8 @@ class SubscriptionFormScreen extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(18, 14, 18, 120),
                 children: [
-                  if (showBackButton) ...[
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: onBack ?? Get.back,
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: brightness == Brightness.dark
-                                  ? Colors.white.withValues(alpha: 0.06)
-                                  : Colors.black.withValues(alpha: 0.03),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(
-                              Icons.arrow_back,
-                              color: AppColors.onMainColor,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: ResponsiveText(
-                            text: _title,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900,
-                            color: AppColors.onMainColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ] else ...[
-                    CustomTitle(title: _title),
-                  ],
+                  CustomAppbar(showBackButton: true, title: _title),
+
                   const SizedBox(height: 16),
                   const CustomLabel(text: 'subscription_name'),
                   const SizedBox(height: 8),
@@ -99,7 +71,9 @@ class SubscriptionFormScreen extends StatelessWidget {
                   PremiumTextField(
                     controller: controller.costController,
                     hintText: '00.00',
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     prefixText: currencySymbol,
                   ),
                   const SizedBox(height: 14),
@@ -112,7 +86,9 @@ class SubscriptionFormScreen extends StatelessWidget {
                             (option) => Expanded(
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                  right: option != controller.cycleOptions.last ? 8 : 0,
+                                  right: option != controller.cycleOptions.last
+                                      ? 8
+                                      : 0,
                                 ),
                                 child: SelectablePill(
                                   label: option,
@@ -148,8 +124,10 @@ class SubscriptionFormScreen extends StatelessWidget {
                             (method) => PaymentMethodChip(
                               label: method,
                               isSelected:
-                                  controller.selectedPaymentMethod.value == method,
-                              onTap: () => controller.selectPaymentMethod(method),
+                                  controller.selectedPaymentMethod.value ==
+                                  method,
+                              onTap: () =>
+                                  controller.selectPaymentMethod(method),
                             ),
                           )
                           .toList(),
@@ -164,7 +142,10 @@ class SubscriptionFormScreen extends StatelessWidget {
                     maxLines: 3,
                   ),
                   const SizedBox(height: 24),
-                  _SaveButton(text: _saveButtonText, onTap: controller.saveSubscription),
+                  _SaveButton(
+                    text: _saveButtonText,
+                    onTap: controller.saveSubscription,
+                  ),
                 ],
               ),
             ),
@@ -174,8 +155,6 @@ class SubscriptionFormScreen extends StatelessWidget {
     );
   }
 }
-
-
 
 class _SaveButton extends StatelessWidget {
   const _SaveButton({required this.text, required this.onTap});

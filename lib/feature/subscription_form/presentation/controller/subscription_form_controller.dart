@@ -193,6 +193,11 @@ class SubscriptionFormController extends GetxController {
     await _storageService.saveSubscription(subscription);
     savedSubscriptions.add(subscription);
 
+    // Reschedule reminders when a new subscription is added
+    try {
+      await NotificationService.rescheduleAll();
+    } catch (_) {}
+
     if (Get.isRegistered<SubscriptionController>()) {
       await Get.find<SubscriptionController>().loadSubscriptions();
     }

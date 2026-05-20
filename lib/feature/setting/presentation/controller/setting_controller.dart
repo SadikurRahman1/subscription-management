@@ -22,6 +22,11 @@ class CurrencyOption {
 class SettingController extends GetxController {
   static const String currencyCodeKey = 'currency_code_key';
   static const String themeModeKey = 'theme_mode_key';
+  static const String reminderEnabledKey = 'reminder_enabled';
+  static const String reminderCadenceKey = 'reminder_cadence';
+  static const String reminderHourKey = 'reminder_hour';
+  static const String reminderMinuteKey = 'reminder_minute';
+  static const String reminderPeriodKey = 'reminder_period';
 
   final RxString selectedCurrency = 'USD'.obs;
   final RxString selectedLanguage = 'English'.obs;
@@ -77,6 +82,7 @@ class SettingController extends GetxController {
     _restoreThemePreference();
     _restoreCurrencyPreference();
     _restoreLanguagePreference();
+    _restoreReminderPreference();
   }
 
   void selectCurrency(String value) {
@@ -125,28 +131,52 @@ class SettingController extends GetxController {
     update();
   }
 
-  void selectReminderCadence(String value) =>
-      selectedReminderCadence.value = value;
+  void selectReminderCadence(String value) {
+    selectedReminderCadence.value = value;
+    STService().saveData(reminderCadenceKey, value);
+    NotificationService.rescheduleAll();
+  }
+
+  void selectReminderCadenceAndSave(String value) {
+    selectedReminderCadence.value = value;
+    STService().saveData(reminderCadenceKey, value);
+    NotificationService.rescheduleAll();
+  }
 
   void selectReminderTime(String value) => selectedReminderTime.value = value;
 
   void selectReminderHour(int value) {
     selectedReminderHour.value = value;
     _syncReminderTime();
+    STService().saveData(reminderHourKey, value.toString());
+    NotificationService.rescheduleAll();
   }
 
   void selectReminderMinute(String value) {
     selectedReminderMinute.value = value;
     _syncReminderTime();
+    STService().saveData(reminderMinuteKey, value);
+    NotificationService.rescheduleAll();
   }
 
   void selectReminderPeriod(String value) {
     selectedReminderPeriod.value = value;
     _syncReminderTime();
+    STService().saveData(reminderPeriodKey, value);
+    NotificationService.rescheduleAll();
   }
 
-  void setPaymentReminderEnabled(bool value) =>
-      paymentReminderEnabled.value = value;
+  void setPaymentReminderEnabled(bool value) {
+    paymentReminderEnabled.value = value;
+    STService().saveBool(reminderEnabledKey, value);
+    NotificationService.rescheduleAll();
+  }
+
+  void setPaymentReminderEnabledAndSave(bool value) {
+    setPaymentReminderEnabled(value);
+    STService().saveBool(reminderEnabledKey, value);
+    NotificationService.rescheduleAll();
+  }
 
   void _restoreThemePreference() {
     final String? savedTheme = STService().getData(themeModeKey);
@@ -398,6 +428,34 @@ class SettingController extends GetxController {
   void _syncReminderTime() {
     selectedReminderTime.value =
         '${selectedReminderHour.value.toString().padLeft(2, '0')}:${selectedReminderMinute.value} ${selectedReminderPeriod.value}';
+  }
+
+  void _restoreReminderPreference() {
+    final bool? enabled = STService().getBool(reminderEnabledKey);
+    if (enabled != null) {
+      paymentReminderEnabled.value = enabled;
+    }
+
+    final String? cadence = STService().getData(reminderCadenceKey);
+    if (cadence != null && reminderCadenceOptions.contains(cadence)) {
+      selectedReminderCadence.value = cadence;
+    }
+
+    final String? hour = STService().getData(reminderHourKey);
+    final String? minute = STService().getData(reminderMinuteKey);
+    final String? period = STService().getData(reminderPeriodKey);
+
+    if (hour != null) {
+      final int? h = int.tryParse(hour);
+      if (h != null) selectedReminderHour.value = h;
+    }
+
+    if (minute != null) selectedReminderMinute.value = minute;
+    if (period != null) selectedReminderPeriod.value = period;
+
+    _syncReminderTime();
+    // ensure notifications are scheduled according to restored prefs
+    NotificationService.rescheduleAll();
   }
 
   Future<void> openSupportEmail() async {

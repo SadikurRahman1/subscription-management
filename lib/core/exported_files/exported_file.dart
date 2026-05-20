@@ -16,6 +16,7 @@ export 'package:subscription_manage/core/constants/image_path.dart';
 export 'package:subscription_manage/core/app_routes/app_routes.dart';
 export 'package:subscription_manage/core/constants/auth_constants.dart';
 export 'package:subscription_manage/core/services/storage_services/st_service.dart';
+export 'package:subscription_manage/core/services/notification_service.dart';
 
 export 'package:subscription_manage/core/wrappers/custom_title.dart';
 
