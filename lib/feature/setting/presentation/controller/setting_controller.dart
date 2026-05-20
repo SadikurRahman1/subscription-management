@@ -31,7 +31,7 @@ class SettingController extends GetxController {
   final RxString selectedCurrency = 'USD'.obs;
   final RxString selectedLanguage = 'English'.obs;
   final RxString selectedTheme = 'System'.obs;
-  final RxBool paymentReminderEnabled = true.obs;
+  final RxBool paymentReminderEnabled = false.obs;
   final RxString selectedReminderCadence = '1 day'.obs;
   final RxString selectedReminderTime = '10:10 am'.obs;
   final RxInt selectedReminderHour = 10.obs;
@@ -167,15 +167,15 @@ class SettingController extends GetxController {
   }
 
   void setPaymentReminderEnabled(bool value) {
-    paymentReminderEnabled.value = value;
-    STService().saveBool(reminderEnabledKey, value);
-    NotificationService.rescheduleAll();
+    // paymentReminderEnabled.value = value;
+    // STService().saveBool(reminderEnabledKey, value);
+    // NotificationService.rescheduleAll();
   }
 
   void setPaymentReminderEnabledAndSave(bool value) {
-    setPaymentReminderEnabled(value);
-    STService().saveBool(reminderEnabledKey, value);
-    NotificationService.rescheduleAll();
+    // setPaymentReminderEnabled(value);
+    // STService().saveBool(reminderEnabledKey, value);
+    // NotificationService.rescheduleAll();
   }
 
   void _restoreThemePreference() {

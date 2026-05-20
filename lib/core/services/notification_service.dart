@@ -2,7 +2,7 @@ import 'package:subscription_manage/core/exported_files/exported_file.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import '../models/subscription_model.dart';
 import 'storage_services/subscription_storage_service.dart';
 
@@ -16,12 +16,16 @@ class NotificationService {
 
   static const String _channelId = 'subscription_reminder_channel';
 
+  static Future<AndroidScheduleMode> _resolveAndroidScheduleMode() async {
+    return AndroidScheduleMode.inexactAllowWhileIdle;
+  }
+
   static Future<void> initialize() async {
     if (_initialized) return;
 
     tz.initializeTimeZones();
     try {
-      final String tzName = await FlutterNativeTimezone.getLocalTimezone();
+      final String tzName = await FlutterTimezone.getLocalTimezone();
       tz.setLocalLocation(tz.getLocation(tzName));
     } catch (_) {
       tz.setLocalLocation(tz.getLocation('UTC'));
@@ -33,6 +37,12 @@ class NotificationService {
       const InitializationSettings(android: android, iOS: ios),
       onDidReceiveNotificationResponse: (response) {},
     );
+
+    await _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
+        ?.requestNotificationsPermission();
 
     _initialized = true;
   }
@@ -50,6 +60,7 @@ class NotificationService {
     int minute,
   ) async {
     await initialize();
+    final androidScheduleMode = await _resolveAndroidScheduleMode();
 
     // compute next due date based on cycle
     DateTime next = _nextDueDate(subscription);
@@ -98,9 +109,9 @@ class NotificationService {
       'Your subscription will expire soon',
       tzDate,
       details,
+      androidScheduleMode: androidScheduleMode,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.dateAndTime,
       payload: 'subscription:${subscription.id}',
     );
