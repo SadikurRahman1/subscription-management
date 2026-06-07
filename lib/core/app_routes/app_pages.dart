@@ -7,6 +7,7 @@ import 'package:subscription_manage/feature/main_bottom_nav/presentation/binding
 import 'package:subscription_manage/feature/main_bottom_nav/presentation/screen/main_bottom_nav_screen.dart';
 import 'package:subscription_manage/feature/splash/presentation/screen/splash_screen.dart';
 import 'package:subscription_manage/feature/subscription_form/presentation/screens/subscription_form_screen.dart';
+import 'package:subscription_manage/feature/subscription_form/presentation/bindings/subscription_form_binding.dart';
 import '../exported_files/exported_file.dart';
 
 class AppPages {
@@ -37,6 +38,7 @@ class AppPages {
       _getPages(
         name: AppRoutes.createScreen,
         page: () => const SubscriptionFormScreen(),
+        binding: SubscriptionFormBinding(),
       ),
      
      

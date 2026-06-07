@@ -22,9 +22,7 @@ class ToggleSummaryCard extends StatelessWidget {
       final title = isYearly ? 'yearly_spend' : 'monthly_spend';
       final value =
           '${_currencySymbol()} ${controller.selectedSpend.toStringAsFixed(0)}';
-      final accent = isYearly
-          ? const Color(0xFFFFC857)
-          : const Color(0xFF52D1FF);
+        final accent = isYearly ? AppColors.m2 : AppColors.m1;
 
       return Container(
         padding: const EdgeInsets.all(14),

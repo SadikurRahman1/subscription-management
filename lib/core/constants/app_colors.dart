@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 
 class AppColors {
   // ⚪️ Basic Colors
+  static const Color m1 = Color(0xFFED2665);
+  static const Color m2 = Color(0xFFF05B54);
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
   static const Color transparent = Colors.transparent;

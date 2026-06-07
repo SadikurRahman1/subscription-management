@@ -93,9 +93,9 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
                   if (controller.isLoading.value) {
                     return const Padding(
                       padding: EdgeInsets.symmetric(vertical: 28),
-                      child: Center(
+                        child: Center(
                         child: CircularProgressIndicator(
-                          color: Color(0xFF8A7CFF),
+                          color: AppColors.m1,
                         ),
                       ),
                     );

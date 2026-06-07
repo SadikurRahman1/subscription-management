@@ -1,5 +1,4 @@
 import 'package:subscription_manage/core/exported_files/exported_file.dart';
-
 import '../controller/setting_controller.dart';
 import 'setting_widgets.dart';
 
@@ -10,9 +9,9 @@ class SettingNotificationsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _SettingSectionBlock(
+    return SettingSectionBlock(
       title: 'notifications',
-      accentColor: const Color(0xFFFF7AB6),
+      accentColor: AppColors.m1,
       cardGradient: AppColors.elevatedSurfaceGradient,
       children: [
         Obx(
@@ -20,14 +19,14 @@ class SettingNotificationsSection extends StatelessWidget {
             title: 'payment_reminder',
             leadingIcon: Icons.notifications_active_outlined,
             leadingGradient: const LinearGradient(
-              colors: [Color(0xFFFF6B6B), Color(0xFFFFB84D)],
+              colors: [AppColors.m1, AppColors.m2],
             ),
             trailing: Obx(
               () => Switch.adaptive(
                 value: controller.paymentReminderEnabled.value,
                 onChanged: controller.setPaymentReminderEnabled,
                 activeThumbColor: Colors.white,
-                activeTrackColor: const Color(0xFFFF6B6B),
+                activeTrackColor: AppColors.m1,
                 inactiveTrackColor: const Color(0xFF4A4F60),
                 inactiveThumbColor: const Color(0xFF9097A8),
               ),
@@ -37,7 +36,7 @@ class SettingNotificationsSection extends StatelessWidget {
               selected: controller.selectedReminderCadence.value,
               onSelected: controller.selectReminderCadence,
               enabled: controller.paymentReminderEnabled.value,
-              accentColor: const Color(0xFFFF6B6B),
+              accentColor: AppColors.m1,
             ),
             onTap: () {},
           ),
@@ -49,7 +48,7 @@ class SettingNotificationsSection extends StatelessWidget {
             leadingIcon: Icons.schedule,
             enabled: controller.paymentReminderEnabled.value,
             leadingGradient: const LinearGradient(
-              colors: [Color(0xFF3DDC97), Color(0xFF1CB5E0)],
+              colors: [AppColors.m1, AppColors.m2],
             ),
             subtitle: ResponsiveText(
               text: controller.paymentReminderEnabled.value
@@ -67,10 +66,10 @@ class SettingNotificationsSection extends StatelessWidget {
                 SettingValuePill(
                   text: controller.selectedReminderTime.value,
                   accent: controller.paymentReminderEnabled.value
-                      ? const Color(0xFF3DDC97)
+                      ? AppColors.m1
                       : const Color(0xFF4A4F60),
                   textColor: controller.paymentReminderEnabled.value
-                      ? const Color(0xFF0E1613)
+                      ? AppColors.onMainColor
                       : const Color(0xFFA2A9B8),
                 ),
                 const SizedBox(width: 10),
@@ -91,28 +90,3 @@ class SettingNotificationsSection extends StatelessWidget {
   }
 }
 
-class _SettingSectionBlock extends StatelessWidget {
-  const _SettingSectionBlock({
-    required this.title,
-    required this.accentColor,
-    required this.cardGradient,
-    required this.children,
-  });
-
-  final String title;
-  final Color accentColor;
-  final Gradient cardGradient;
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SettingSectionHeader(title: title, accentColor: accentColor),
-        const SizedBox(height: 12),
-        SettingCard(gradient: cardGradient, children: children),
-      ],
-    );
-  }
-}

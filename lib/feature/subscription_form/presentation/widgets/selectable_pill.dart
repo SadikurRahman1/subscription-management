@@ -20,14 +20,14 @@ class SelectablePill extends StatelessWidget {
         height: 46,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          gradient: isSelected
-              ? const LinearGradient(colors: [Color(0xFF8A7CFF), Color(0xFF4F46E5)])
+            gradient: isSelected
+              ? LinearGradient(colors: [AppColors.m1, AppColors.m2])
               : AppColors.surfaceGradient,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFFA698FF)
-                : AppColors.borderColor.withValues(alpha: 0.55),
+              ? AppColors.m1
+              : AppColors.borderColor.withValues(alpha: 0.55),
           ),
         ),
         child: ResponsiveText(

@@ -3,7 +3,6 @@ import 'package:subscription_manage/feature/setting/presentation/controller/sett
 import 'package:subscription_manage/feature/setting/presentation/widgets/setting_about_section.dart';
 import 'package:subscription_manage/feature/setting/presentation/widgets/setting_general_section.dart';
 import 'package:subscription_manage/feature/setting/presentation/widgets/setting_more_info_section.dart';
-import 'package:subscription_manage/feature/setting/presentation/widgets/setting_notifications_section.dart';
 import 'package:subscription_manage/feature/setting/presentation/widgets/setting_support_section.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -49,8 +48,8 @@ class SettingScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 24),
             children: [
               SettingGeneralSection(controller: controller),
-              const SizedBox(height: 18),
-              SettingNotificationsSection(controller: controller),
+              // const SizedBox(height: 18),
+              // SettingNotificationsSection(controller: controller),
               const SizedBox(height: 18),
               SettingSupportSection(controller: controller),
               const SizedBox(height: 18),

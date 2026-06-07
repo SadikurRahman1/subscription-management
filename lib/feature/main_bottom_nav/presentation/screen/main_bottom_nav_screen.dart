@@ -58,8 +58,8 @@ class MainBottomNavScreen extends StatelessWidget {
                     child: ClipPath(
                       clipper: _BottomNavClipper(),
                       child: Container(
-                        decoration: BoxDecoration(
-                          gradient: surfaceGradient,
+                          decoration: BoxDecoration(
+                            gradient: surfaceGradient,
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(24),
                             topRight: Radius.circular(24),
@@ -116,16 +116,14 @@ class MainBottomNavScreen extends StatelessWidget {
                         height: 84,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFF8A7CFF), Color(0xFF4F46E5)],
+                          gradient: LinearGradient(
+                            colors: [AppColors.m1, AppColors.m2],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(
-                                0xFF4F46E5,
-                              ).withValues(alpha: 0.18),
+                              color: AppColors.m2.withValues(alpha: 0.18),
                               blurRadius: 14,
                               offset: const Offset(0, 8),
                             ),
@@ -139,8 +137,8 @@ class MainBottomNavScreen extends StatelessWidget {
                           Icons.add,
                           size: 36,
                           color: brightness == Brightness.dark
-                              ? Colors.white
-                              : AppColors.onMainColor,
+                              ? AppColors.white
+                              : AppColors.white,
                         ),
                       ),
                     ),
@@ -187,8 +185,8 @@ class _BottomNavItem extends StatelessWidget {
                 height: isSelected ? 44 : 36,
                 decoration: BoxDecoration(
                   gradient: isSelected
-                      ? const LinearGradient(
-                          colors: [Color(0xFF8A7CFF), Color(0xFF4F46E5)],
+                      ? LinearGradient(
+                          colors: [AppColors.m1, AppColors.m2],
                         )
                       : null,
                   color: isSelected ? null : Colors.transparent,
@@ -209,7 +207,7 @@ class _BottomNavItem extends StatelessWidget {
                 width: 6,
                 height: 6,
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.purple : Colors.transparent,
+                  color: isSelected ? AppColors.m1 : Colors.transparent,
                   borderRadius: BorderRadius.circular(3),
                 ),
               ),

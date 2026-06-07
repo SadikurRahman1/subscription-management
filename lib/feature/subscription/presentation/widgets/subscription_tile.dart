@@ -51,11 +51,11 @@ class SubscriptionTile extends StatelessWidget {
     final bool isExpired = daysLeft <= 0;
     final bool isWarning = !isExpired && daysLeft < 4;
     final String badgeText = _localizedDaysLeft(daysLeft);
-    final Color badgeColor = isExpired
-        ? const Color(0xFFFF6B6B)
-        : isWarning
-        ? const Color(0xFFFFC857)
-        : const Color(0xFF52D1FF);
+        final Color badgeColor = isExpired
+            ? AppColors.danger
+            : isWarning
+            ? AppColors.warning
+            : AppColors.success;
 
     return Material(
       color: Colors.transparent,
@@ -82,11 +82,11 @@ class SubscriptionTile extends StatelessWidget {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF8A7CFF), Color(0xFF4F46E5)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                      gradient: LinearGradient(
+                        colors: [AppColors.m1, AppColors.m2],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: const Icon(

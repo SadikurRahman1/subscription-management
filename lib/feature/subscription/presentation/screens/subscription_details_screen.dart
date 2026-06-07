@@ -3,6 +3,7 @@ import 'package:subscription_manage/feature/setting/presentation/controller/sett
 
 import '../../../../core/exported_files/exported_file.dart';
 import '../controller/subscription_controller.dart';
+import '../../../subscription_form/presentation/controller/subscription_form_controller.dart';
 import '../../../subscription_form/presentation/screens/subscription_form_screen.dart';
 import '../widgets/subscription_details_action_button.dart';
 import '../widgets/subscription_details_card.dart';
@@ -58,7 +59,7 @@ class SubscriptionDetailsScreen extends StatelessWidget {
                       const SizedBox(height: 18),
                       SubscriptionDetailsActionButton(
                         text: 'back',
-                        color: const Color(0xFF8A7CFF),
+                        color: AppColors.m1,
                         onTap: () => Get.back(),
                       ),
                     ],
@@ -87,9 +88,18 @@ class SubscriptionDetailsScreen extends StatelessWidget {
                       Expanded(
                         child: SubscriptionDetailsActionButton(
                           text: 'update',
-                          color: const Color(0xFF8A7CFF),
+                          color: AppColors.m1,
                           onTap: () => Get.to(
-                            () => SubscriptionFormScreen(subscription: subscription),
+                            () => SubscriptionFormScreen(
+                              subscription: subscription,
+                            ),
+                            binding: BindingsBuilder(() {
+                              Get.put(
+                                SubscriptionFormController(
+                                  editingSubscription: subscription,
+                                ),
+                              );
+                            }),
                           ),
                         ),
                       ),
@@ -149,16 +159,18 @@ class SubscriptionDetailsScreen extends StatelessWidget {
         ),
         actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         actions: [
-          TextButton(onPressed: () => Get.back(), child: Text('cancel'.tr)),
+          TextButton(
+            onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+            child: Text('cancel'.tr),
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFFF6B6B),
               foregroundColor: AppColors.white,
             ),
             onPressed: () async {
-              Get.back();
+              Navigator.of(context, rootNavigator: true).pop();
               await controller.deleteSubscription(subscription.id);
-              Get.back();
             },
             child: Text('delete'.tr),
           ),

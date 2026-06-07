@@ -59,7 +59,6 @@ class SubscriptionFormController extends GetxController {
     if (editingSubscription != null) {
       _loadEditingSubscription(editingSubscription!);
     }
-    loadSavedSubscriptions();
   }
 
   void _loadEditingSubscription(SubscriptionModel subscription) {

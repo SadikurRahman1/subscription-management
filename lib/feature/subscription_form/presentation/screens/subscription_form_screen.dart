@@ -30,128 +30,122 @@ class SubscriptionFormScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<SubscriptionFormController>(
-      init: _isEditing
-          ? SubscriptionFormController(editingSubscription: subscription)
-          : SubscriptionFormController(),
-      builder: (controller) {
-        final String currencySymbol =
-            Get.find<SettingController>().selectedCurrencySymbol;
+    final SubscriptionFormController controller =
+        Get.find<SubscriptionFormController>();
+    final String currencySymbol =
+        Get.find<SettingController>().selectedCurrencySymbol;
 
-        return Scaffold(
-          backgroundColor: AppColors.bgColor,
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.bgColor,
-                  AppColors.mainColor,
-                  AppColors.bgColor,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-            child: SafeArea(
-              child: ListView(
-                padding: const EdgeInsets.fromLTRB(18, 14, 18, 120),
-                children: [
-                  CustomAppbar(showBackButton: true, title: _title),
-
-                  const SizedBox(height: 16),
-                  const CustomLabel(text: 'subscription_name'),
-                  const SizedBox(height: 8),
-                  PremiumTextField(
-                    controller: controller.subscriptionNameController,
-                    hintText: 'netflix_premium'.tr,
-                  ),
-                  const SizedBox(height: 14),
-                  const CustomLabel(text: 'cost'),
-                  const SizedBox(height: 8),
-                  PremiumTextField(
-                    controller: controller.costController,
-                    hintText: '00.00',
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                    ),
-                    prefixText: currencySymbol,
-                  ),
-                  const SizedBox(height: 14),
-                  const CustomLabel(text: 'payment_cycle'),
-                  const SizedBox(height: 10),
-                  Obx(
-                    () => Row(
-                      children: controller.cycleOptions
-                          .map(
-                            (option) => Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  right: option != controller.cycleOptions.last
-                                      ? 8
-                                      : 0,
-                                ),
-                                child: SelectablePill(
-                                  label: option,
-                                  isSelected:
-                                      controller.selectedCycle.value == option,
-                                  onTap: () => controller.selectCycle(option),
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  const CustomLabel(text: 'start_date'),
-                  const SizedBox(height: 8),
-                  Obx(
-                    () => TapField(
-                      value: controller.selectedStartDate.value,
-                      icon: Icons.calendar_today,
-                      onTap: () => controller.pickStartDate(context),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  const CustomLabel(text: 'payment_method'),
-                  const SizedBox(height: 10),
-                  Obx(
-                    () => Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: controller.paymentMethods
-                          .map(
-                            (method) => PaymentMethodChip(
-                              label: method,
-                              isSelected:
-                                  controller.selectedPaymentMethod.value ==
-                                  method,
-                              onTap: () =>
-                                  controller.selectPaymentMethod(method),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  const CustomLabel(text: 'note_optional'),
-                  const SizedBox(height: 8),
-                  PremiumTextField(
-                    controller: controller.noteController,
-                    hintText: 'add_any_note'.tr,
-                    maxLines: 3,
-                  ),
-                  const SizedBox(height: 24),
-                  _SaveButton(
-                    text: _saveButtonText,
-                    onTap: controller.saveSubscription,
-                  ),
-                ],
-              ),
-            ),
+    return Scaffold(
+      backgroundColor: AppColors.bgColor,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              AppColors.bgColor,
+              AppColors.mainColor,
+              AppColors.bgColor,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-        );
-      },
+        ),
+        child: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(18, 14, 18, 120),
+            children: [
+              CustomAppbar(showBackButton: true, title: _title),
+
+              const SizedBox(height: 16),
+              const CustomLabel(text: 'subscription_name'),
+              const SizedBox(height: 8),
+              PremiumTextField(
+                controller: controller.subscriptionNameController,
+                hintText: 'netflix_premium'.tr,
+              ),
+              const SizedBox(height: 14),
+              const CustomLabel(text: 'cost'),
+              const SizedBox(height: 8),
+              PremiumTextField(
+                controller: controller.costController,
+                hintText: '00.00',
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                prefixText: currencySymbol,
+              ),
+              const SizedBox(height: 14),
+              const CustomLabel(text: 'payment_cycle'),
+              const SizedBox(height: 10),
+              Obx(
+                () => Row(
+                  children: controller.cycleOptions
+                      .map(
+                        (option) => Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              right: option != controller.cycleOptions.last
+                                  ? 8
+                                  : 0,
+                            ),
+                            child: SelectablePill(
+                              label: option,
+                              isSelected:
+                                  controller.selectedCycle.value == option,
+                              onTap: () => controller.selectCycle(option),
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+              const SizedBox(height: 14),
+              const CustomLabel(text: 'start_date'),
+              const SizedBox(height: 8),
+              Obx(
+                () => TapField(
+                  value: controller.selectedStartDate.value,
+                  icon: Icons.calendar_today,
+                  onTap: () => controller.pickStartDate(context),
+                ),
+              ),
+              const SizedBox(height: 14),
+              const CustomLabel(text: 'payment_method'),
+              const SizedBox(height: 10),
+              Obx(
+                () => Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: controller.paymentMethods
+                      .map(
+                        (method) => PaymentMethodChip(
+                          label: method,
+                          isSelected:
+                              controller.selectedPaymentMethod.value ==
+                              method,
+                          onTap: () => controller.selectPaymentMethod(method),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+              const SizedBox(height: 14),
+              const CustomLabel(text: 'note_optional'),
+              const SizedBox(height: 8),
+              PremiumTextField(
+                controller: controller.noteController,
+                hintText: 'add_any_note'.tr,
+                maxLines: 3,
+              ),
+              const SizedBox(height: 24),
+              _SaveButton(
+                text: _saveButtonText,
+                onTap: controller.saveSubscription,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -172,7 +166,7 @@ class _SaveButton extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xFFFFC857), Color(0xFFFF8A00)],
+            colors: [AppColors.m1, AppColors.m2],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

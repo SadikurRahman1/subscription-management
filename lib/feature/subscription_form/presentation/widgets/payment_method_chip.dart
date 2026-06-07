@@ -22,12 +22,12 @@ class PaymentMethodChip extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           gradient: isSelected
-              ? const LinearGradient(colors: [Color(0xFF52D1FF), Color(0xFF1CB5E0)])
+              ? LinearGradient(colors: [AppColors.m1, AppColors.m2])
               : AppColors.surfaceGradient,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFF7CE4FF)
+                ? AppColors.m1
                 : AppColors.borderColor.withValues(alpha: 0.55),
           ),
         ),
@@ -35,7 +35,7 @@ class PaymentMethodChip extends StatelessWidget {
           text: label,
           fontSize: 10.5,
           fontWeight: FontWeight.w800,
-          color: isSelected ? const Color(0xFF05151D) : AppColors.onMainSecondary,
+          color: isSelected ? AppColors.onMainColor : AppColors.onMainSecondary,
         ),
       ),
     );

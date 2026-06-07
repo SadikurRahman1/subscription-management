@@ -329,7 +329,7 @@ class SettingController extends GetxController {
                           (hour) => ChoiceChip(
                             label: Text(hour.toString()),
                             selected: selectedReminderHour.value == hour,
-                            selectedColor: const Color(0xFF8A7CFF),
+                            selectedColor: AppColors.m1,
                             backgroundColor: Colors.white.withValues(
                               alpha: 0.05,
                             ),
@@ -364,7 +364,7 @@ class SettingController extends GetxController {
                           (minute) => ChoiceChip(
                             label: Text(minute),
                             selected: selectedReminderMinute.value == minute,
-                            selectedColor: const Color(0xFF3DDC97),
+                            selectedColor: AppColors.m1,
                             backgroundColor: Colors.white.withValues(
                               alpha: 0.05,
                             ),
@@ -398,7 +398,7 @@ class SettingController extends GetxController {
                           (period) => ChoiceChip(
                             label: Text(period),
                             selected: selectedReminderPeriod.value == period,
-                            selectedColor: const Color(0xFFFF6B6B),
+                            selectedColor: AppColors.m1,
                             backgroundColor: Colors.white.withValues(
                               alpha: 0.05,
                             ),
@@ -536,19 +536,19 @@ class SettingController extends GetxController {
                       onSelected(option);
                       Get.back();
                     },
-                    child: Container(
+                        child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 14,
                       ),
                       decoration: BoxDecoration(
                         color: option == selectedValue
-                            ? const Color(0xFF4F46E5).withValues(alpha: 0.25)
+                            ? AppColors.m2.withValues(alpha: 0.25)
                             : Colors.white.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: option == selectedValue
-                              ? const Color(0xFF8A7CFF)
+                              ? AppColors.m1
                               : Colors.white.withValues(alpha: 0.06),
                         ),
                       ),
@@ -563,9 +563,9 @@ class SettingController extends GetxController {
                             ),
                           ),
                           if (option == selectedValue)
-                            const Icon(
+                            Icon(
                               Icons.check_circle,
-                              color: Color(0xFF8A7CFF),
+                              color: AppColors.m1,
                               size: 20,
                             ),
                         ],

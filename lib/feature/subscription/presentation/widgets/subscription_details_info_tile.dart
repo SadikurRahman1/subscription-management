@@ -29,7 +29,7 @@ class SubscriptionDetailsInfoTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: AppColors.purple, size: 20),
+          Icon(icon, color: AppColors.onMainColor, size: 20),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

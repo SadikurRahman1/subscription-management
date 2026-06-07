@@ -1,5 +1,4 @@
 import 'package:subscription_manage/core/exported_files/exported_file.dart';
-
 import 'setting_widgets.dart';
 
 class SettingAboutSection extends StatelessWidget {
@@ -7,9 +6,9 @@ class SettingAboutSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _SettingSectionBlock(
+    return SettingSectionBlock(
       title: 'about',
-      accentColor: const Color(0xFF9C8CFF),
+      accentColor: AppColors.m1,
       cardGradient: AppColors.elevatedSurfaceGradient,
       children: const [_PrivacyTile(), SizedBox(height: 10), _TermsTile()],
     );
@@ -24,8 +23,8 @@ class _PrivacyTile extends StatelessWidget {
     return SettingTile(
       title: 'privacy_policy',
       leadingIcon: Icons.privacy_tip_outlined,
-      leadingGradient: const LinearGradient(
-        colors: [Color(0xFF9C8CFF), Color(0xFF62D0FF)],
+      leadingGradient: LinearGradient(
+        colors: [AppColors.m1, AppColors.m2],
       ),
       trailing: const Icon(
         Icons.chevron_right,
@@ -45,8 +44,8 @@ class _TermsTile extends StatelessWidget {
     return SettingTile(
       title: 'terms_and_conditions',
       leadingIcon: Icons.description_outlined,
-      leadingGradient: const LinearGradient(
-        colors: [Color(0xFF8A7CFF), Color(0xFFFF7AB6)],
+      leadingGradient: LinearGradient(
+        colors: [AppColors.m1, AppColors.m2],
       ),
       trailing: const Icon(
         Icons.chevron_right,
@@ -58,28 +57,3 @@ class _TermsTile extends StatelessWidget {
   }
 }
 
-class _SettingSectionBlock extends StatelessWidget {
-  const _SettingSectionBlock({
-    required this.title,
-    required this.accentColor,
-    required this.cardGradient,
-    required this.children,
-  });
-
-  final String title;
-  final Color accentColor;
-  final Gradient cardGradient;
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SettingSectionHeader(title: title, accentColor: accentColor),
-        const SizedBox(height: 12),
-        SettingCard(gradient: cardGradient, children: children),
-      ],
-    );
-  }
-}

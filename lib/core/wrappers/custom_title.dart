@@ -12,12 +12,12 @@ class CustomTitle extends StatelessWidget {
         Container(
           width: 10,
           height: 10,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(
-              colors: [Color(0xFF52D1FF), Color(0xFF8A7CFF)],
+              colors: [AppColors.m1, AppColors.m2],
             ),
-          ),
+        ),
         ),
         const SizedBox(width: 8),
         ResponsiveText(

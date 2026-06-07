@@ -7,7 +7,7 @@ class SubscriptionController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxList<SubscriptionModel> subscriptions = <SubscriptionModel>[].obs;
 
-  final List<String> spendFilters = ['Monthly', 'Yearly', 'All'];
+  final List<String> spendFilters = ['Monthly', 'Yearly'];
 
   final SubscriptionStorageService _storageService =
       SubscriptionStorageService.instance;
@@ -75,37 +75,54 @@ class SubscriptionController extends GetxController {
           .toList(growable: false)
         ..sort((a, b) => remainingDays(a).compareTo(remainingDays(b)));
 
-  double get monthlySpend => subscriptions
-      .where((item) => item.paymentCycle == 'Monthly')
-      .fold(0, (sum, item) => sum + item.cost);
+  double get monthlySpend => subscriptions.fold(0, (sum, item) {
+        double add = 0;
+        switch (item.paymentCycle) {
+          case 'Weekly':
+            // Weekly to monthly: weeks per year / months per year
+            add = item.cost * 52.15 / 12.0;
+            break;
+          case 'Monthly':
+            add = item.cost;
+            break;
+          case 'Yearly':
+            add = item.cost / 12.0;
+            break;
+          default:
+            add = item.cost;
+        }
+        return sum + add;
+      });
 
-  double get yearlySpend => subscriptions
-      .where((item) => item.paymentCycle == 'Yearly')
-      .fold(0, (sum, item) => sum + item.cost);
+  double get yearlySpend => subscriptions.fold(0, (sum, item) {
+        double add = 0;
+        switch (item.paymentCycle) {
+          case 'Weekly':
+            add = item.cost * 52.15;
+            break;
+          case 'Monthly':
+            add = item.cost * 12.0;
+            break;
+          case 'Yearly':
+            add = item.cost;
+            break;
+          default:
+            add = item.cost * 12.0;
+        }
+        return sum + add;
+      });
 
   int get subscriptionCount => subscriptions.length;
 
   double get selectedSpend {
-    if (selectedSpendFilter.value == 'Monthly') {
-      return monthlySpend;
-    }
-
-    if (selectedSpendFilter.value == 'Yearly') {
-      return yearlySpend;
-    }
-
-    return monthlySpend + yearlySpend;
+    if (selectedSpendFilter.value == 'Monthly') return monthlySpend;
+    if (selectedSpendFilter.value == 'Yearly') return yearlySpend;
+    return monthlySpend;
   }
 
   String get selectedSpendCaption {
-    if (selectedSpendFilter.value == 'Monthly') {
-      return 'Bills this month';
-    }
-
-    if (selectedSpendFilter.value == 'Yearly') {
-      return 'Bills this year';
-    }
-
+    if (selectedSpendFilter.value == 'Monthly') return 'Bills this month';
+    if (selectedSpendFilter.value == 'Yearly') return 'Bills this year';
     return 'All subscriptions spend';
   }
 

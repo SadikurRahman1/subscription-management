@@ -4,7 +4,7 @@ class SettingSectionHeader extends StatelessWidget {
   const SettingSectionHeader({
     super.key,
     required this.title,
-    this.accentColor = const Color(0xFF8A7CFF),
+    this.accentColor = AppColors.m1,
   });
 
   final String title;
@@ -85,7 +85,7 @@ class SettingTile extends StatelessWidget {
     this.enabled = true,
     this.leadingIcon = Icons.settings_outlined,
     this.leadingGradient = const LinearGradient(
-      colors: [Color(0xFF7C4DFF), Color(0xFF4FC3F7)],
+      colors: [AppColors.m1, AppColors.m2],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     ),
@@ -146,7 +146,7 @@ class SettingTile extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF7C4DFF).withValues(alpha: 0.35),
+                          color: AppColors.m1.withValues(alpha: 0.35),
                           blurRadius: 10,
                           offset: const Offset(0, 5),
                         ),
@@ -200,13 +200,13 @@ class SettingValuePill extends StatelessWidget {
   const SettingValuePill({
     super.key,
     required this.text,
-    this.accent = const Color(0xFFFFC857),
-    this.textColor = const Color(0xFF101010),
+    this.accent = AppColors.m2,
+    this.textColor,
   });
 
   final String text;
   final Color accent;
-  final Color textColor;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +227,7 @@ class SettingValuePill extends StatelessWidget {
         text: text,
         fontSize: 11.2,
         fontWeight: FontWeight.w700,
-        color: textColor,
+        color: textColor ?? AppColors.onMainColor,
       ),
     );
   }
@@ -240,7 +240,7 @@ class SettingChoiceChips extends StatelessWidget {
     required this.selected,
     required this.onSelected,
     required this.enabled,
-    this.accentColor = const Color(0xFF8A7CFF),
+    this.accentColor = AppColors.m1,
   });
 
   final List<String> options;
@@ -280,6 +280,32 @@ class SettingChoiceChips extends StatelessWidget {
             ),
           )
           .toList(),
+    );
+  }
+}
+
+class SettingSectionBlock extends StatelessWidget {
+  const SettingSectionBlock({super.key, 
+    required this.title,
+    required this.accentColor,
+    required this.cardGradient,
+    required this.children,
+  });
+
+  final String title;
+  final Color accentColor;
+  final Gradient cardGradient;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SettingSectionHeader(title: title, accentColor: accentColor),
+        const SizedBox(height: 12),
+        SettingCard(gradient: cardGradient, children: children),
+      ],
     );
   }
 }

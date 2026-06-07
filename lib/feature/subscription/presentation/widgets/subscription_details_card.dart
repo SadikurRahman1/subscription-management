@@ -22,10 +22,10 @@ class SubscriptionDetailsCard extends StatelessWidget {
     final bool isExpired = daysLeft <= 0;
     final bool isWarning = !isExpired && daysLeft < 4;
     final Color badgeColor = isExpired
-      ? const Color(0xFFFF6B6B)
+      ? AppColors.danger
       : isWarning
-        ? const Color(0xFFFFC857)
-        : const Color(0xFF52D1FF);
+        ? AppColors.warning
+        : AppColors.success;
 
     return Container(
       width: double.infinity,

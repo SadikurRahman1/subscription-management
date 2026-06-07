@@ -36,7 +36,7 @@ class TapField extends StatelessWidget {
                 color: AppColors.onMainColor,
               ),
             ),
-            Icon(icon, color: AppColors.purple, size: 20),
+            Icon(icon, color: AppColors.onMainColor, size: 20),
           ],
         ),
       ),
